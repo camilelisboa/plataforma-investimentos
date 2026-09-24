@@ -1,0 +1,4 @@
+Ticker;Nome;Classe;Tipo;Quantidade;Preço Médio;Preço Atual;Meta %;Cotação Automática;Observações
+PETR4;Petrobras PN;Ações BR;Ação;100;32,50;;10;Sim;Exemplo - remova esta linha antes de importar
+HGLG11;CSHG Logística;FIIs;FII;20;158,00;;8;Sim;Exemplo - remova esta linha antes de importar
+TESOURO-SELIC;Tesouro Selic;Renda Fixa;Título;1;15000,00;15300,00;30;Não;Para saldos, pode usar quantidade 1

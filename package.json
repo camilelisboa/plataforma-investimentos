@@ -1,0 +1,20 @@
+{
+  "name": "plataforma-de-investimentos",
+  "version": "2.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@netlify/database": "latest",
+    "@netlify/functions": "latest",
+    "exceljs": "latest"
+  },
+  "devDependencies": {
+    "netlify-cli": "latest",
+    "typescript": "latest",
+    "@types/node": "latest"
+  }
+}

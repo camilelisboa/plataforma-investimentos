@@ -1,0 +1,18 @@
+{
+  "name": "Plataforma de Investimentos",
+  "short_name": "Investimentos",
+  "description": "Private Portfolio OS · Connected Wealth 2.4.0 · Production Launch",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "./app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

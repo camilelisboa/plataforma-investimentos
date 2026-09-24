@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="Plataforma privada de investimentos — Rodada 36 · Production Launch 2.4.0, com rastreabilidade de dados, conferência humana, integrações de mercado, segurança e continuidade operacional." />
+  <title>Plataforma de Investimentos — Connected Wealth 2.4.0 · Rodada 36</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <meta name="theme-color" content="#111111" />
+  <link rel="icon" href="./app-icon.svg" type="image/svg+xml" />
+</head>
+<body>
+<main id="app" class="app-shell" aria-live="polite">
+  <section id="loginView" class="login-view">
+    <div class="login-art" aria-hidden="true">
+      <div class="monogram">PI</div>
+      <div class="login-art-copy">
+        <p class="smallcaps">PRIVATE INVESTMENT PLATFORM</p>
+        <h2>Patrimônio exige método.</h2>
+        <div class="art-frame"><div class="art-arch"></div><div class="art-stairs"></div></div>
+      </div>
+      <p class="smallcaps">PLATAFORMA · MMXXVI</p>
+    </div>
+    <div class="login-panel">
+      <div class="login-box">
+        <p class="eyebrow">ACESSO PRIVADO</p>
+        <h1>Plataforma de<br><em>Investimentos.</em></h1>
+        <p class="intro">Carteiras privadas e independentes, acompanhamento patrimonial, mercado e rebalanceamento baseado nas metas definidas por cada usuário.</p>
+        <form id="loginForm" novalidate>
+          <label>Usuário<input id="username" autocomplete="username" required placeholder="Seu nome de acesso" /></label>
+          <label>Senha<input id="password" type="password" autocomplete="current-password" required placeholder="••••••" /></label>
+          <p id="loginError" class="form-error" role="alert"></p>
+          <button id="loginButton" class="primary-button" type="submit">Entrar na plataforma</button>
+        </form>
+        <p class="privacy-note">Cada login recebe apenas os dados da própria carteira.</p>
+        <div id="platformStatus" class="platform-status" role="status"><span class="status-dot"></span><span>Verificando conexão segura…</span></div>
+        <div id="initialSetupPanel" class="r22-setup-panel" hidden>
+          <div class="r22-setup-head"><div><p class="eyebrow">PRIMEIRO ACESSO</p><strong>Ativar Camile e Lucas</strong></div><span class="badge">uma única vez</span></div>
+          <p>Na primeira publicação, defina as senhas iniciais usando o token de configuração guardado no ambiente do site. Depois da ativação, este painel é encerrado permanentemente.</p>
+          <form id="initialSetupForm" novalidate>
+            <label>Token de configuração<input id="setupToken" type="password" autocomplete="off" placeholder="Token da publicação" /></label>
+            <label>Senha inicial da Camile<input id="setupCamilePassword" type="password" minlength="10" autocomplete="new-password" placeholder="Mínimo de 10 caracteres" /></label>
+            <label>Senha inicial do Lucas<input id="setupLucasPassword" type="password" minlength="10" autocomplete="new-password" placeholder="Mínimo de 10 caracteres" /></label>
+            <p id="setupError" class="form-error" role="alert"></p>
+            <button id="setupButton" class="secondary-button" type="submit">Ativar plataforma</button>
+          </form>
+        </div>
+        <button id="previewButton" class="secondary-button preview-login-button" type="button" hidden>Ver prévia da Rodada 36 · Production Launch</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="dashboardView" class="dashboard-view" hidden>
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">PI</span><div class="brand-copy"><strong>Plataforma</strong><small>de Investimentos</small></div><span class="r20-version-badge">v2.4 launch</span></div>
+      <div class="theme-signature" aria-hidden="true"><span class="signature-camile">CAMILE · PRIVATE PORTFOLIO</span><span class="signature-lucas">LUCAS · PRIVATE WEALTH OFFICE</span></div>
+      <nav aria-label="Navegação principal">
+        <button class="nav-item active" data-section="overview" aria-label="Visão geral"><span>◫</span><b>Visão geral</b></button>
+        <button class="nav-item" data-section="portfolio" aria-label="Carteira"><span>◇</span><b>Carteira</b></button>
+        <button class="nav-item" data-section="transactions" aria-label="Movimentações"><span>⇄</span><b>Movimentações</b></button>
+        <button class="nav-item" data-section="income" aria-label="Proventos"><span>◌</span><b>Proventos</b></button>
+        <button class="nav-item" data-section="performance" aria-label="Evolução"><span>⌁</span><b>Evolução</b></button>
+        <button class="nav-item" data-section="wealth" aria-label="Patrimônio"><span>◒</span><b>Patrimônio</b></button>
+        <button class="nav-item" data-section="fiscal" aria-label="Fiscal & IR"><span>§</span><b>Fiscal & IR</b></button>
+        <button class="nav-item" data-section="automation" aria-label="Automação"><span>⇧</span><b>Automação</b></button>
+        <button class="nav-item" data-section="security" aria-label="Segurança"><span>⌾</span><b>Segurança</b></button>
+        <button class="nav-item r22-nav-cloud" data-section="cloud" aria-label="Nuvem & publicação"><span>☁</span><b>Nuvem</b></button>
+        <button class="nav-item r23-nav-integrations" data-section="integrations" aria-label="Integrações"><span>⛓</span><b>Integrações</b></button>
+        <button class="nav-item r34-nav-reconciliation" data-section="reconciliation" aria-label="Conciliação & proveniência"><span>≋</span><b>Conciliação</b></button>
+        <button class="nav-item r20-nav-release" data-section="release" aria-label="Central 2.4"><span>2.4</span><b>Central 2.4</b></button>
+        <button class="nav-item" data-section="analysis" aria-label="Análise"><span>◎</span><b>Análise</b></button>
+        <button class="nav-item" data-section="decision" aria-label="Decisões"><span>✦</span><b>Decisões</b></button>
+        <button class="nav-item" data-section="rebalance" aria-label="Rebalanceamento"><span>↗</span><b>Rebalanceamento</b></button>
+        <button class="nav-item" data-section="market" aria-label="Mercado"><span>◈</span><b>Mercado</b></button>
+        <button class="nav-item" data-section="live" aria-label="Ao vivo"><span>●</span><b>Ao vivo</b></button>
+        <button class="nav-item" data-section="watchlist" aria-label="Watchlist"><span>☆</span><b>Watchlist</b></button>
+        <button class="nav-item" data-section="finance" aria-label="Vida financeira"><span>⌂</span><b>Vida financeira</b></button>
+        <button class="nav-item" data-section="planning" aria-label="Planejamento"><span>⌗</span><b>Planejamento</b></button>
+        <button class="nav-item" data-section="reports" aria-label="Relatórios"><span>▤</span><b>Relatórios</b></button>
+        <button class="nav-item" data-section="rules" aria-label="Regras automáticas"><span>⌁</span><b>Regras automáticas</b></button>
+        <button class="nav-item" data-section="governance" aria-label="Governança"><span>◐</span><b>Governança</b></button>
+        <button class="nav-item" data-section="closing" aria-label="Fechamento"><span>▣</span><b>Fechamento</b></button>
+        <button class="nav-item" data-section="agenda" aria-label="Agenda & notícias"><span>◉</span><b>Agenda & notícias</b></button>
+        <button class="nav-item" data-section="history" aria-label="Histórico"><span>◷</span><b>Histórico</b></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button id="sidebarProfileButton" class="sidebar-profile" type="button" title="Abrir perfil e aparência">
+          <span class="profile-avatar profile-avatar-sidebar"><img id="sidebarProfilePhoto" alt="" hidden><span id="sidebarProfileInitials">CL</span></span>
+          <span class="sidebar-profile-copy"><strong id="sidebarProfileName">Perfil</strong><small id="sidebarPaletteName">Paleta pessoal</small></span>
+        </button>
+        <button id="settingsButton" class="nav-item"><span>⚙</span><b>Configurações</b></button>
+        <button id="logoutButton" class="nav-item danger"><span>↪</span><b>Sair</b></button>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div><p class="eyebrow">PLATAFORMA DE INVESTIMENTOS</p><h2 id="welcomeName">Olá</h2></div>
+        <div class="top-actions">
+          <button id="focusModeButton" class="focus-mode-button" type="button" aria-pressed="false" title="Alternar modo foco"><span class="focus-mode-icon">◐</span><span class="focus-mode-label">Modo foco</span></button>
+          <div class="market-chip"><span id="marketDot" class="dot"></span><span id="marketChipText">Mercado ainda não atualizado</span></div>
+          <button id="quickAddButton" class="compact-button" type="button">＋ Ativo</button>
+          <button id="globalSearchButton" class="command-search-button" type="button" title="Busca global (Ctrl/Cmd + K)" aria-label="Abrir busca global"><span>⌕</span><b>Buscar</b><kbd>⌘K</kbd></button>
+          <button id="r20LaunchButton" class="r20-launch-button" type="button" title="Abrir Central 2.4"><span>2.4</span><b>Central 2.4</b></button>
+          <button id="manualLockButton" class="r19-lock-button" type="button" title="Bloquear a tela" aria-label="Bloquear a tela"><span>⌾</span><b>Bloquear</b></button>
+          <button id="topProfileButton" class="top-profile-button" type="button" title="Perfil e aparência" aria-label="Abrir perfil e aparência">
+            <span class="profile-avatar profile-avatar-top"><img id="topProfilePhoto" alt="" hidden><span id="topProfileInitials">CL</span></span>
+          </button>
+        </div>
+      </header>
+
+      <div id="passwordNotice" class="notice" hidden>
+        <div><strong>Você ainda está usando a senha inicial.</strong><span> Troque-a em Configurações para proteger melhor o acesso.</span></div>
+        <button id="passwordNoticeButton" class="text-button" type="button">Trocar agora</button>
+      </div>
+
+      <div id="previewBanner" class="preview-banner" hidden>
+        <div><strong>Prévia da Rodada 36 · Production Launch 2.4.0</strong><span> Valores pessoais começam zerados. Edições da prévia ficam apenas neste navegador.</span></div>
+        <div class="preview-theme-switch" aria-label="Alternar tema da prévia">
+          <button id="previewCamile" type="button">Camile</button>
+          <button id="previewLucas" type="button">Lucas</button>
+          <button id="exitPreview" type="button">Sair da prévia</button>
+        </div>
+      </div>
+
+      <section id="overviewSection" class="view-section active-section">
+        <article class="hero-card">
+          <div class="hero-copy">
+            <p class="eyebrow">VISÃO CONSOLIDADA</p>
+            <h3 id="portfolioName">Minha carteira</h3>
+            <p id="heroSubtitle">Acompanhe patrimônio, proventos, alocação e o próximo aporte em um único lugar.</p>
+            <div class="hero-inline-metrics">
+              <span><small>Rentabilidade da posição</small><strong id="heroReturn">0,00%</strong></span>
+              <span><small>Proventos acumulados</small><strong id="heroIncome">R$ 0,00</strong></span>
+              <span><small>Metas configuradas</small><strong id="heroTarget">0%</strong></span>
+            </div>
+          </div>
+          <div id="heroVisual" class="hero-visual" aria-hidden="true">
+            <div class="hero-photo-layer"></div>
+            <div class="editorial-card editorial-card-a"><span id="heroEditorialKicker">PRIVATE PORTFOLIO</span><strong id="heroEditorialTitle">PORTFOLIO</strong><i>XII</i></div>
+            <div class="editorial-card editorial-card-b"><span id="heroEditorialMini">PRIVATE EDITION</span><div class="editorial-line"></div><div class="editorial-oval"></div></div>
+            <div class="seal"><small>PRIVATE</small><b>PI</b><small>MMXXVI</small></div>
+            <div id="heroSignatureLine" class="hero-signature-line">CAPITAL · CLARITY · LONG TERM</div>
+          </div>
+        </article>
+
+        <div class="r14-command-grid">
+          <article class="panel r14-brief-panel">
+            <div class="panel-heading"><div><p class="eyebrow">DAILY BRIEF</p><h4 id="dailyBriefTitle">Seu patrimônio, em um minuto</h4></div><span id="dailyBriefBadge" class="badge">atualizado</span></div>
+            <div id="dailyBrief" class="daily-brief-list"></div>
+          </article>
+          <article class="panel r14-shortcuts-panel">
+            <div class="panel-heading"><div><p class="eyebrow">ATALHOS</p><h4>Acesso pessoal</h4></div><button id="manageShortcutsButton" class="text-button" type="button">Personalizar →</button></div>
+            <div id="quickShortcuts" class="quick-shortcuts"></div>
+            <p class="r14-panel-note">Os atalhos são salvos separadamente para cada perfil.</p>
+          </article>
+        </div>
+
+        <article class="panel r14-action-panel">
+          <div class="panel-heading"><div><p class="eyebrow">CENTRAL DE AÇÕES</p><h4>O que está pedindo sua atenção</h4></div><span id="actionCenterBadge" class="badge">0 pendências</span></div>
+          <div id="actionCenterList" class="action-center-list"></div>
+        </article>
+
+        <div class="metric-grid metric-grid-six">
+          <article class="metric-card"><span class="metric-label-row"><span>Patrimônio atual</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="currentValue">R$ 0,00</strong><small>Posições + base manual reconciliada</small></article>
+          <article class="metric-card"><span class="metric-label-row"><span>Total investido</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="investedValue">R$ 0,00</strong><small>Custo das posições + base manual</small></article>
+          <article class="metric-card"><span>Resultado da posição</span><strong id="profitValue">R$ 0,00</strong><small id="profitPct">0,00%</small></article>
+          <article class="metric-card"><span class="metric-label-row"><span>Proventos líquidos</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="incomeValue">R$ 0,00</strong><small>Base + proventos registrados</small></article>
+          <article class="metric-card"><span class="metric-label-row"><span>Aportes líquidos</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="netFlowsValue">R$ 0,00</strong><small>Aportes menos retiradas reconciliados</small></article>
+          <article class="metric-card"><span>Ativos</span><strong id="assetsCount">0</strong><small id="quoteCoverage">Nenhuma cotação</small></article>
+        </div>
+
+        <div class="overview-grid">
+          <article class="panel allocation-panel">
+            <div class="panel-heading"><div><p class="eyebrow">ALOCAÇÃO</p><h4>Composição da carteira</h4></div><span class="badge">por classe</span></div>
+            <div class="allocation-wrap"><div id="allocationDonut" class="donut-chart"><div><strong id="donutTotal">0</strong><small>ativos</small></div></div><div id="allocationLegend" class="legend-list"></div></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">EVOLUÇÃO</p><h4>Patrimônio registrado</h4></div><button id="goPerformanceButton" class="text-button" type="button">Ver evolução →</button></div>
+            <div class="chart-shell compact-chart"><canvas id="overviewChart" aria-label="Evolução do patrimônio"></canvas><div id="overviewChartEmpty" class="chart-empty">Os pontos surgem conforme a plataforma registra seus dias de uso.</div></div>
+          </article>
+        </div>
+
+        <div class="overview-grid">
+          <article class="panel insight-panel"><div class="panel-heading"><div><p class="eyebrow">LEITURA DA CARTEIRA</p><h4>Desvios das suas metas</h4></div><button id="goRebalanceButton" class="text-button" type="button">Rebalancear →</button></div><div id="overviewInsights" class="insight-list"></div></article>
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">MOVIMENTAÇÃO RECENTE</p><h4>Últimos registros</h4></div><button id="goTransactionsButton" class="text-button" type="button">Abrir →</button></div><div id="recentActivity" class="mini-list"></div></article>
+        </div>
+
+
+        <div class="decision-overview-grid">
+          <article class="panel decision-summary-card">
+            <div class="panel-heading"><div><p class="eyebrow">PAINEL DE DECISÕES</p><h4>O que merece atenção agora?</h4></div><button id="goDecisionButton" class="text-button" type="button">Abrir central →</button></div>
+            <div id="decisionSnapshot" class="decision-snapshot"></div>
+          </article>
+          <article class="panel market-pulse-card">
+            <div class="panel-heading"><div><p class="eyebrow">PULSO DA CARTEIRA</p><h4>Leitura das posições cotadas</h4></div><span id="marketFreshnessBadge" class="badge">sem atualização</span></div>
+            <div id="marketPulse" class="market-pulse"></div>
+          </article>
+        </div>
+
+        <article class="panel market-strip-panel">
+          <div class="panel-heading"><div><p class="eyebrow">MERCADO</p><h4>Ativos com cotação automática</h4></div><button id="refreshMarketOverview" class="secondary-button small-button" type="button">Atualizar cotações</button></div>
+          <div id="marketStrip" class="market-strip"></div>
+        </article>
+
+        <article class="panel live-overview-panel">
+          <div class="panel-heading"><div><p class="eyebrow">PAINEL AO VIVO</p><h4>Mercado, câmbio, cripto & macro</h4></div><button id="goLiveButton" class="text-button" type="button">Abrir central →</button></div>
+          <div id="liveOverviewGrid" class="live-mini-grid"></div>
+        </article>
+
+        <article class="panel planning-overview-panel">
+          <div class="panel-heading"><div><p class="eyebrow">PLANEJAMENTO</p><h4>Planejamento & cenários</h4></div><button id="goPlanningButton" class="text-button" type="button">Abrir planejamento →</button></div>
+          <div id="planningOverview" class="planning-overview-grid"></div>
+        </article>
+      </section>
+
+      <section id="portfolioSection" class="view-section" hidden>
+        <div class="section-heading"><div><p class="eyebrow">POSIÇÕES</p><h3>Sua carteira</h3><p>Cadastre ou importe as posições atuais. Compras e vendas registradas em Movimentações passam a atualizar quantidade e preço médio automaticamente.</p></div><div class="section-actions"><input id="importFile" type="file" accept=".xlsx,.csv" hidden><button id="importButton" class="secondary-button auto-width" type="button">⇧ Central de importação</button><button id="addAssetButton" class="primary-button auto-width" type="button">＋ Adicionar ativo</button></div></div>
+        <div id="importStatus" class="source-notice" hidden></div>
+        <div class="panel table-panel"><div id="assetTableWrap" class="table-wrap"></div></div>
+        <div class="portfolio-footnote">A Central de Importação da Rodada 18 aceita posições, movimentações e proventos, com análise antes de gravar, histórico de lotes e proteção contra duplicidades.</div>
+      </section>
+
+      <section id="transactionsSection" class="view-section" hidden>
+        <div class="section-heading"><div><p class="eyebrow">LIVRO DE MOVIMENTAÇÕES</p><h3>Compras, vendas & caixa</h3><p>Registre operações com data. Compras recalculam o preço médio; vendas reduzem quantidade sem alterar o custo médio da posição remanescente.</p></div><button id="addTransactionButton" class="primary-button auto-width" type="button">＋ Nova movimentação</button></div>
+        <div class="metric-grid"><article class="metric-card"><span class="metric-label-row"><span>Aportes acumulados</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="contributionsValue">R$ 0,00</strong><small>Base + fluxos registrados</small></article><article class="metric-card"><span class="metric-label-row"><span>Retiradas acumuladas</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="withdrawalsValue">R$ 0,00</strong><small>Base + fluxos registrados</small></article><article class="metric-card"><span>Aporte líquido</span><strong id="netContributionsValue">R$ 0,00</strong><small>Aportes − retiradas</small></article><article class="metric-card"><span>Registros</span><strong id="transactionCount">0</strong><small>Últimos 300 exibidos</small></article></div>
+        <div class="panel table-panel"><div id="transactionsTable" class="table-wrap"></div></div>
+      </section>
+
+      <section id="incomeSection" class="view-section" hidden>
+        <div class="section-heading"><div><p class="eyebrow">RENDA DA CARTEIRA</p><h3>Proventos</h3><p>Registre dividendos, JCP, rendimentos de FIIs, juros e cupons separadamente da valorização dos ativos.</p></div><button id="addIncomeButton" class="primary-button auto-width" type="button">＋ Registrar provento</button></div>
+        <div class="metric-grid"><article class="metric-card"><span class="metric-label-row"><span>Proventos líquidos</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="incomeTotalValue">R$ 0,00</strong><small>Base reconciliada + eventos</small></article><article class="metric-card"><span>Bruto recebido</span><strong id="incomeGrossValue">R$ 0,00</strong><small>Total informado</small></article><article class="metric-card"><span>Impostos</span><strong id="incomeTaxValue">R$ 0,00</strong><small>Retenções informadas</small></article><article class="metric-card"><span>Eventos</span><strong id="incomeCount">0</strong><small>Registros de proventos</small></article></div>
+        <div class="panel table-panel"><div id="incomeTable" class="table-wrap"></div></div>
+      </section>
+
+      <section id="performanceSection" class="view-section" hidden>
+        <div class="section-heading"><div><p class="eyebrow">HISTÓRICO PATRIMONIAL</p><h3>Evolução</h3><p>Um snapshot diário consolida patrimônio, custo, aportes, retiradas e proventos. O benchmark padrão é o Ibovespa (^BVSP).</p></div><button id="refreshPerformanceButton" class="secondary-button auto-width" type="button">↻ Atualizar registro de hoje</button></div>
+        <div class="metric-grid"><article class="metric-card"><span>Valor atual</span><strong id="performanceCurrentValue">R$ 0,00</strong><small>Último snapshot</small></article><article class="metric-card"><span>Fluxo líquido</span><strong id="performanceNetFlows">R$ 0,00</strong><small>Aportes − retiradas</small></article><article class="metric-card"><span>Proventos</span><strong id="performanceIncome">R$ 0,00</strong><small>Acumulados</small></article><article class="metric-card"><span>Benchmark</span><strong id="benchmarkLabel">IBOV</strong><small id="benchmarkStatus">Aguardando dados</small></article></div>
+        <article class="panel"><div class="panel-heading"><div><p class="eyebrow">CURVA PATRIMONIAL</p><h4>Patrimônio x custo</h4></div><span class="badge">snapshot diário</span></div><div class="chart-shell large-chart"><canvas id="performanceChart" aria-label="Gráfico de evolução patrimonial"></canvas><div id="performanceChartEmpty" class="chart-empty">É necessário registrar mais de um dia para formar uma curva histórica.</div></div><div class="chart-legend"><span><i class="legend-swatch series-a"></i>Patrimônio</span><span><i class="legend-swatch series-b"></i>Custo atual</span></div></article>
+        <article class="panel benchmark-panel"><div class="panel-heading"><div><p class="eyebrow">REFERÊNCIA DE MERCADO</p><h4>Ibovespa — 12 meses</h4></div><span class="badge">fonte externa</span></div><div class="chart-shell benchmark-chart"><canvas id="benchmarkChart" aria-label="Histórico do benchmark"></canvas><div id="benchmarkChartEmpty" class="chart-empty">Benchmark indisponível na fonte de dados atual.</div></div><p class="helper">A comparação serve como referência visual; não significa que a carteira deva acompanhar ou superar o índice.</p></article>
+      </section>
+
+
+      <section id="wealthSection" class="view-section" hidden>
+        <div class="section-heading wealth-heading">
+          <div><p class="eyebrow">PERFORMANCE & INTELIGÊNCIA PATRIMONIAL</p><h3>Patrimônio</h3><p>Separe fluxo de capital, valorização e renda; acompanhe contribuição por ativo, concentração, histórico mensal e cenários matemáticos de longo prazo.</p></div>
+          <div class="wealth-heading-actions">
+            <label>Período
+              <select id="wealthPeriod">
+                <option value="ALL">Todo histórico</option>
+                <option value="12M">12 meses</option>
+                <option value="6M">6 meses</option>
+                <option value="3M">3 meses</option>
+              </select>
+            </label>
+            <span class="badge">Rodada 17</span>
+          </div>
+        </div>
+
+        <div class="wealth-hero-grid">
+          <article class="wealth-hero-card wealth-hero-primary">
+            <span class="metric-label-row"><span>Patrimônio investido</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="wealthCurrentValue">R$ 0,00</strong>
+            <small id="wealthCurrentCaption">valor atual das posições</small>
+            <div class="wealth-mini-line"><span>Retorno estimado no período</span><b id="wealthPeriodReturn">—</b></div>
+          </article>
+          <article class="wealth-hero-card"><span class="metric-label-row"><span>Capital líquido aportado</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="wealthNetFlows">R$ 0,00</strong><small>Aportes acumulados − retiradas</small></article>
+          <article class="wealth-hero-card"><span>Valorização estimada</span><strong id="wealthMarketGain">R$ 0,00</strong><small>Patrimônio atual − capital líquido</small></article>
+          <article class="wealth-hero-card"><span class="metric-label-row"><span>Proventos registrados</span><button class="metric-edit-button" type="button" data-edit-financial aria-label="Editar bases financeiras">✎</button></span><strong id="wealthIncomeValue">R$ 0,00</strong><small>Base reconciliada + renda registrada</small></article>
+        </div>
+
+        <div class="wealth-grid wealth-grid-main">
+          <article class="panel wealth-growth-panel">
+            <div class="panel-heading"><div><p class="eyebrow">ORIGEM DO CRESCIMENTO</p><h4>Aportes × valorização × proventos</h4></div><span id="wealthProducedBadge" class="badge">—</span></div>
+            <div id="wealthGrowthBreakdown" class="wealth-breakdown"></div>
+            <div class="chart-shell large-chart wealth-chart"><canvas id="wealthGrowthChart" aria-label="Evolução de patrimônio e capital aportado"></canvas><div id="wealthGrowthChartEmpty" class="chart-empty">O histórico aparecerá conforme os snapshots forem registrados.</div></div>
+            <div class="chart-legend"><span><i class="legend-swatch series-a"></i>Patrimônio</span><span><i class="legend-swatch series-b"></i>Capital líquido</span><span><i class="legend-swatch series-c"></i>Proventos acumulados</span></div>
+            <p class="wealth-method">Metodologia: a valorização é estimada pela diferença entre patrimônio atual e capital líquido aportado. Proventos são exibidos separadamente para evitar misturar renda distribuída com preço dos ativos.</p>
+          </article>
+          <article class="panel wealth-concentration-panel">
+            <div class="panel-heading"><div><p class="eyebrow">DIVERSIFICAÇÃO</p><h4>Concentração atual</h4></div><span class="badge">posição atual</span></div>
+            <div class="wealth-concentration-kpis">
+              <div><span>Maior posição</span><strong id="wealthTopOne">—</strong><small id="wealthTopOneName">—</small></div>
+              <div><span>Top 5</span><strong id="wealthTopFive">—</strong><small>do patrimônio</small></div>
+              <div><span>Posições efetivas</span><strong id="wealthEffectivePositions">—</strong><small>1 ÷ índice HHI</small></div>
+              <div><span>Classes ativas</span><strong id="wealthClassCount">0</strong><small>com saldo positivo</small></div>
+            </div>
+            <div id="wealthConcentrationList" class="wealth-position-list"></div>
+          </article>
+        </div>
+
+        <div class="wealth-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">CONTRIBUIÇÃO</p><h4>Quem moveu o resultado atual</h4></div><span class="badge">resultado não realizado</span></div>
+            <div id="wealthContributors" class="wealth-contributors"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">POR CLASSE</p><h4>Resultado das posições</h4></div><span class="badge">valor atual × custo</span></div>
+            <div id="wealthClassPerformance" class="wealth-class-list"></div>
+          </article>
+        </div>
+
+        <article class="panel wealth-heatmap-panel">
+          <div class="panel-heading"><div><p class="eyebrow">RITMO MENSAL</p><h4>Calendário de performance</h4></div><span id="wealthHeatmapBadge" class="badge">histórico</span></div>
+          <div id="wealthHeatmap" class="wealth-heatmap"></div>
+          <p class="wealth-method">Retorno mensal ajustado por fluxo: variação do patrimônio menos aportes/retiradas líquidos do mês, dividida pelo patrimônio do início do período. É uma aproximação e depende da qualidade dos registros.</p>
+        </article>
+
+        <div class="wealth-grid wealth-projection-grid">
+          <article class="panel wealth-projection-panel">
+            <div class="panel-heading"><div><p class="eyebrow">CENÁRIOS</p><h4>Trajetória patrimonial</h4></div><span class="badge">simulação matemática</span></div>
+            <div class="wealth-projection-inputs">
+              <label>Aporte mensal (R$)<input id="wealthProjectionMonthly" inputmode="decimal" placeholder="0,00"></label>
+              <label>Retorno base anual (%)<input id="wealthProjectionReturn" inputmode="decimal" placeholder="8,00"></label>
+              <label>Yield anual p/ renda (%)<input id="wealthIncomeYield" inputmode="decimal" placeholder="5,00"></label>
+              <button id="wealthProjectionSave" class="secondary-button auto-width" type="button">Salvar premissas</button>
+            </div>
+            <div class="wealth-scenario-cards" id="wealthScenarioCards"></div>
+            <div class="chart-shell large-chart wealth-projection-chart"><canvas id="wealthProjectionChart" aria-label="Cenários patrimoniais"></canvas><div id="wealthProjectionChartEmpty" class="chart-empty">Informe premissas válidas para gerar cenários.</div></div>
+            <div class="chart-legend"><span><i class="legend-swatch series-b"></i>Conservador</span><span><i class="legend-swatch series-a"></i>Base</span><span><i class="legend-swatch series-c"></i>Otimista</span></div>
+          </article>
+          <article class="panel wealth-milestones-panel">
+            <div class="panel-heading"><div><p class="eyebrow">MARCOS</p><h4>1 · 3 · 5 · 10 · 20 anos</h4></div><span class="badge">cenário base</span></div>
+            <div id="wealthMilestones" class="wealth-milestones"></div>
+            <div class="wealth-passive-box"><span>Renda passiva matemática em 20 anos</span><strong id="wealthPassiveIncome20">—</strong><small id="wealthPassiveIncomeCaption">com o yield hipotético informado</small></div>
+            <p class="wealth-method">Os cenários não são previsão nem promessa de retorno. São projeções matemáticas construídas com as premissas preenchidas pelo usuário.</p>
+          </article>
+        </div>
+
+        <article class="panel wealth-benchmark-panel">
+          <div class="panel-heading"><div><p class="eyebrow">REFERÊNCIA</p><h4>Carteira × benchmark</h4></div><span id="wealthBenchmarkBadge" class="badge">base 100</span></div>
+          <div class="chart-shell large-chart"><canvas id="wealthBenchmarkChart" aria-label="Carteira versus benchmark em base 100"></canvas><div id="wealthBenchmarkChartEmpty" class="chart-empty">São necessários dados suficientes da carteira e do benchmark para comparar.</div></div>
+          <div class="chart-legend"><span><i class="legend-swatch series-a"></i>Carteira</span><span><i class="legend-swatch series-c"></i>Benchmark</span></div>
+        </article>
+      </section>
+
+
+      <section id="fiscalSection" class="view-section" hidden>
+        <div class="section-heading fiscal-heading">
+          <div><p class="eyebrow">FISCAL & IMPOSTO DE RENDA</p><h3>Central fiscal</h3><p>Organize vendas, resultados, proventos, retenções e documentos para conferência mensal e para a declaração anual. Os cálculos automáticos são estimativas de apoio e devem ser validados com notas de corretagem, informes e orientação profissional.</p></div>
+          <div class="fiscal-heading-actions"><label>Ano-calendário<select id="fiscalYear"></select></label><span class="badge">Rodada 17</span></div>
+        </div>
+        <div class="fiscal-alert"><strong>Assistente de organização fiscal.</strong><span> A plataforma não transmite declarações nem substitui a apuração oficial. Para 2026, a referência padrão considera 15% em operações comuns, 20% em day trade, 20% em ganhos com FII e a isenção mensal de vendas de ações à vista até R$ 20 mil quando aplicável.</span></div>
+        <div class="fiscal-kpi-grid">
+          <article class="fiscal-kpi"><span>Vendas no ano</span><strong id="fiscalSalesYear">R$ 0,00</strong><small>valor bruto registrado</small></article>
+          <article class="fiscal-kpi"><span>Resultado estimado</span><strong id="fiscalEstimatedResult">R$ 0,00</strong><small>vendas × custo médio cadastrado</small></article>
+          <article class="fiscal-kpi"><span>IR retido em proventos</span><strong id="fiscalIncomeTax">R$ 0,00</strong><small>campo imposto dos proventos</small></article>
+          <article class="fiscal-kpi"><span>Meses com vendas</span><strong id="fiscalActiveMonths">0</strong><small id="fiscalPendingCaption">12 meses monitorados</small></article>
+        </div>
+        <div class="fiscal-grid fiscal-grid-main">
+          <article class="panel fiscal-monthly-panel">
+            <div class="panel-heading"><div><p class="eyebrow">APURAÇÃO MENSAL</p><h4>Mapa de renda variável</h4></div><button id="fiscalExportCsv" class="secondary-button auto-width" type="button">Exportar CSV</button></div>
+            <div id="fiscalMonthlyTable" class="fiscal-monthly-table"></div>
+            <p class="fiscal-method">Resultado estimado usa o preço médio atualmente cadastrado no ativo e não recompõe automaticamente o custo fiscal lote a lote. Use-o como radar; confirme a apuração mensal antes de pagar ou declarar.</p>
+          </article>
+          <article class="panel fiscal-config-panel">
+            <div class="panel-heading"><div><p class="eyebrow">PARÂMETROS</p><h4>Regras de conferência</h4></div><span class="badge">editável</span></div>
+            <form id="fiscalSettingsForm" class="fiscal-settings-form">
+              <label>Isenção mensal — ações (R$)<input id="fiscalStockExemption" inputmode="decimal" value="20.000,00"></label>
+              <label>Operações comuns (%)<input id="fiscalCommonRate" inputmode="decimal" value="15,00"></label>
+              <label>Day trade (%)<input id="fiscalDayTradeRate" inputmode="decimal" value="20,00"></label>
+              <label>Venda de FII (%)<input id="fiscalFiiRate" inputmode="decimal" value="20,00"></label>
+              <button id="saveFiscalSettings" class="primary-button auto-width" type="submit">Salvar parâmetros</button>
+            </form>
+            <div class="fiscal-source-card"><span>Referência oficial</span><strong>Receita Federal · regras consultadas para 2026</strong><p>Ações à vista podem ter isenção pelo limite mensal de alienações quando os requisitos são atendidos; day trade e FII não entram nessa isenção.</p></div>
+          </article>
+        </div>
+        <div class="fiscal-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">BENS & DIREITOS</p><h4>Posição para conferência anual</h4></div><span id="fiscalHoldingsBadge" class="badge">posição atual</span></div>
+            <div id="fiscalHoldings" class="fiscal-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">RENDIMENTOS</p><h4>Proventos e retenções</h4></div><span id="fiscalIncomeBadge" class="badge">ano selecionado</span></div>
+            <div id="fiscalIncomeList" class="fiscal-list"></div>
+          </article>
+        </div>
+        <article class="panel fiscal-checklist-panel">
+          <div class="panel-heading"><div><p class="eyebrow">DOSSIÊ DO IR</p><h4>Checklist de documentos</h4></div><span class="badge">organização</span></div>
+          <div id="fiscalChecklist" class="fiscal-checklist"></div>
+        </article>
+      </section>
+
+      <section id="automationSection" class="view-section" hidden>
+        <div class="section-heading r18-heading">
+          <div><p class="eyebrow">AUTOMATION STUDIO · RODADA 18</p><h3>Automação & Importações</h3><p>Reduza o preenchimento manual sem perder controle: analise arquivos antes de gravar, bloqueie duplicidades e deixe a rotina diária cuidar das tarefas repetitivas que você autorizar.</p></div>
+          <div class="section-actions"><button id="runAutomationNow" class="secondary-button auto-width" type="button">↻ Executar rotina agora</button><button id="saveAutomationSettings" class="primary-button auto-width" type="button">Salvar automações</button></div>
+        </div>
+
+        <div class="r18-metric-grid">
+          <article class="r18-metric"><span>Última rotina</span><strong id="automationLastRun">Nunca</strong><small id="automationLastRunDetail">nenhuma execução registrada</small></article>
+          <article class="r18-metric"><span>Importações</span><strong id="automationImportCount">0</strong><small>lotes registrados</small></article>
+          <article class="r18-metric"><span>Linhas processadas</span><strong id="automationRowsProcessed">0</strong><small>histórico de importações</small></article>
+          <article class="r18-metric"><span>Duplicidades bloqueadas</span><strong id="automationDuplicateCount">0</strong><small>proteção de histórico</small></article>
+        </div>
+
+        <div class="r18-automation-layout">
+          <article class="panel r18-routine-panel">
+            <div class="panel-heading"><div><p class="eyebrow">ROTINA DIÁRIA</p><h4>O que pode rodar sozinho</h4></div><span id="automationStatusBadge" class="badge">manual</span></div>
+            <div class="r18-toggle-list">
+              <label class="r18-toggle-row"><span><strong>Rotina automática diária</strong><small>Executa no primeiro acesso do dia, se estiver ativada.</small></span><input id="autoDailyEnabled" type="checkbox"><i></i></label>
+              <label class="r18-toggle-row"><span><strong>Atualizar cotações</strong><small>Consulta os ativos marcados com cotação automática e a watchlist.</small></span><input id="autoRefreshQuotes" type="checkbox"><i></i></label>
+              <label class="r18-toggle-row"><span><strong>Reavaliar regras & alertas</strong><small>Registra apenas novos sinais, usando os limites definidos por você.</small></span><input id="autoEvaluateRules" type="checkbox"><i></i></label>
+              <label class="r18-toggle-row"><span><strong>Proteção contra duplicidades</strong><small>Impede reimportar a mesma movimentação ou provento.</small></span><input id="autoDuplicateGuard" type="checkbox"><i></i></label>
+              <label class="r18-toggle-row"><span><strong>No máximo uma vez por dia</strong><small>Evita repetir a rotina em vários acessos no mesmo dia.</small></span><input id="autoOnceDaily" type="checkbox"><i></i></label>
+            </div>
+            <div class="r18-inline-field"><label>Cotação é considerada antiga após <span><input id="autoStaleHours" type="number" min="1" max="168" step="1"> horas</span></label></div>
+            <div id="automationRunSummary" class="r18-run-summary"><span class="r18-run-orb">AI</span><div><strong>Automação sob seu controle</strong><small>A rotina nunca compra, vende ou altera metas. Ela apenas atualiza dados, registra snapshot e reavalia sinais.</small></div></div>
+          </article>
+
+          <article class="panel r18-reconcile-panel">
+            <div class="panel-heading"><div><p class="eyebrow">RECONCILIAÇÃO</p><h4>Posição atual x histórico</h4></div><span id="reconcileBadge" class="badge">indicativo</span></div>
+            <p class="helper">Compara a quantidade atual com compras e vendas registradas. Diferenças podem ser normais quando o histórico começou depois da carteira.</p>
+            <div id="reconciliationList" class="r18-reconciliation-list"></div>
+          </article>
+        </div>
+
+        <article class="panel r18-import-studio">
+          <div class="panel-heading r18-import-heading"><div><p class="eyebrow">IMPORT STUDIO</p><h4>Analise antes de gravar</h4></div><span id="importDetectedBadge" class="badge">nenhum arquivo</span></div>
+          <div class="r18-import-type-grid" id="r18ImportTypeGrid">
+            <button type="button" class="r18-import-type active" data-import-type="AUTO"><span>✦</span><strong>Detectar automaticamente</strong><small>Identifica o modelo pelo cabeçalho.</small></button>
+            <button type="button" class="r18-import-type" data-import-type="POSITIONS"><span>◇</span><strong>Posições</strong><small>Quantidade, preço médio, classe e meta.</small></button>
+            <button type="button" class="r18-import-type" data-import-type="TRANSACTIONS"><span>⇄</span><strong>Movimentações</strong><small>Compras, vendas, aportes e retiradas.</small></button>
+            <button type="button" class="r18-import-type" data-import-type="INCOME"><span>◌</span><strong>Proventos</strong><small>Dividendos, JCP, FII e juros.</small></button>
+          </div>
+
+          <div class="r18-import-workspace">
+            <div class="r18-drop-card" id="r18DropZone">
+              <input id="r18ImportFile" type="file" accept=".csv,.xlsx" hidden>
+              <div class="r18-drop-icon">⇧</div><strong>Solte sua planilha aqui</strong><p>CSV ou XLSX · até 8 MB · até 1.000 linhas</p>
+              <button id="r18ChooseImportFile" class="secondary-button auto-width" type="button">Escolher arquivo</button>
+              <small id="r18ImportFileName">Nenhum arquivo selecionado</small>
+            </div>
+            <div class="r18-import-options">
+              <div><strong>Modelos prontos</strong><p>Use os modelos para importar com menos ajustes.</p></div>
+              <div class="r18-template-links"><a href="./modelo-posicoes.csv" download>↓ Posições</a><a href="./modelo-movimentacoes.csv" download>↓ Movimentações</a><a href="./modelo-proventos.csv" download>↓ Proventos</a></div>
+              <label class="r18-check-row"><input id="r18ApplyToPositions" type="checkbox"><span><strong>Aplicar compras/vendas à posição atual</strong><small>Desativado por padrão para não somar histórico antigo sobre uma posição já importada.</small></span></label>
+              <div class="r18-import-buttons"><button id="r18AnalyzeImport" class="secondary-button auto-width" type="button">Analisar arquivo</button><button id="r18CommitImport" class="primary-button auto-width" type="button" disabled>Confirmar importação</button></div>
+            </div>
+          </div>
+
+          <div id="r18ImportPreview" class="r18-import-preview" hidden>
+            <div class="r18-preview-kpis"><span><small>Linhas</small><strong id="r18PreviewTotal">0</strong></span><span><small>Prontas</small><strong id="r18PreviewValid" class="positive">0</strong></span><span><small>Duplicadas</small><strong id="r18PreviewDuplicates">0</strong></span><span><small>Com erro</small><strong id="r18PreviewErrors" class="negative">0</strong></span></div>
+            <div id="r18PreviewTable" class="r18-preview-table"></div>
+          </div>
+          <div id="r18ImportMessage" class="source-notice" hidden></div>
+        </article>
+
+        <div class="r18-bottom-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">HISTÓRICO DE LOTES</p><h4>O que entrou na plataforma</h4></div><span id="importHistoryBadge" class="badge">0 lotes</span></div>
+            <div id="r18ImportHistory" class="r18-import-history"></div>
+          </article>
+          <article class="panel r18-safety-card">
+            <div class="panel-heading"><div><p class="eyebrow">GUARDRAILS</p><h4>Automação sem perder o controle</h4></div><span class="badge">R18</span></div>
+            <div class="r18-guardrail"><span>01</span><div><strong>Prévia obrigatória</strong><small>O arquivo é analisado antes da confirmação.</small></div></div>
+            <div class="r18-guardrail"><span>02</span><div><strong>Duplicidade por fingerprint</strong><small>Movimentações e proventos importados recebem assinatura única.</small></div></div>
+            <div class="r18-guardrail"><span>03</span><div><strong>Posições não são alteradas por padrão</strong><small>Histórico importado não muda quantidade atual sem autorização explícita.</small></div></div>
+            <div class="r18-guardrail"><span>04</span><div><strong>Auditoria preservada</strong><small>Cada lote fica registrado com arquivo, data, contagens e status.</small></div></div>
+          </article>
+        </div>
+      </section>
+
+
+      <section id="securitySection" class="view-section" hidden>
+        <div class="section-heading r19-heading">
+          <div><p class="eyebrow">SECURITY & VAULT · RODADA 19</p><h3>Segurança & Backup</h3><p>Controle a duração da sessão, veja acessos recentes, encerre outros dispositivos e mantenha cópias versionadas da sua carteira sem misturar os dados de Camile e Lucas.</p></div>
+          <div class="section-actions"><button id="securityLockNow" class="secondary-button auto-width" type="button">⌾ Bloquear tela</button><button id="createVaultBackup" class="primary-button auto-width" type="button">＋ Criar backup agora</button></div>
+        </div>
+
+        <div class="r19-metric-grid">
+          <article class="r19-metric"><span>Proteções</span><strong id="securityProtectionCount">—</strong><small id="securityProtectionDetail">verificando configuração</small></article>
+          <article class="r19-metric"><span>Sessões ativas</span><strong id="securitySessionCount">—</strong><small>somente deste usuário</small></article>
+          <article class="r19-metric"><span>Último backup</span><strong id="securityLastBackup">—</strong><small id="securityLastBackupDetail">nenhuma cópia registrada</small></article>
+          <article class="r19-metric"><span>Retenção do cofre</span><strong>10</strong><small>versões por usuário</small></article>
+        </div>
+
+        <div class="r19-security-grid">
+          <article class="panel r19-control-panel">
+            <div class="panel-heading"><div><p class="eyebrow">SESSÃO</p><h4>Política de acesso</h4></div><span id="securityPolicyBadge" class="badge">privado</span></div>
+            <div class="r19-toggle-list">
+              <label class="r19-toggle-row"><span><strong>Encerrar por inatividade</strong><small>A sessão é finalizada no navegador depois do tempo escolhido sem interação.</small></span><input id="securityIdleEnabled" type="checkbox"><i></i></label>
+              <label class="r19-timeout-row"><span><strong>Tempo de inatividade</strong><small>Entre 5 minutos e 4 horas.</small></span><select id="securityIdleMinutes"><option value="5">5 min</option><option value="15">15 min</option><option value="30">30 min</option><option value="60">1 hora</option><option value="120">2 horas</option><option value="240">4 horas</option></select></label>
+              <label class="r19-toggle-row"><span><strong>Encerrar ao deixar o navegador por muito tempo</strong><small>Se a aba ficar oculta além do limite de inatividade, a sessão termina ao retornar.</small></span><input id="securityBackgroundLogout" type="checkbox"><i></i></label>
+              <label class="r19-toggle-row"><span><strong>Backup automático</strong><small>Cria uma nova versão do cofre no primeiro acesso elegível do período.</small></span><input id="securityAutoBackup" type="checkbox"><i></i></label>
+              <label class="r19-timeout-row"><span><strong>Frequência do backup</strong><small>As cópias são independentes para cada usuário.</small></span><select id="securityBackupFrequency"><option value="DAILY">Diário</option><option value="WEEKLY">Semanal</option><option value="MONTHLY">Mensal</option></select></label>
+            </div>
+            <button id="saveSecuritySettings" class="primary-button auto-width" type="button">Salvar política</button>
+          </article>
+
+          <article class="panel r19-sessions-panel">
+            <div class="panel-heading"><div><p class="eyebrow">DISPOSITIVOS</p><h4>Sessões ativas</h4></div><button id="logoutOtherSessions" class="text-button" type="button">Encerrar as outras</button></div>
+            <p class="helper">A sessão atual é identificada abaixo. Ao trocar a senha, as demais sessões também são encerradas.</p>
+            <div id="securitySessions" class="r19-session-list"></div>
+          </article>
+        </div>
+
+        <div class="r19-vault-grid">
+          <article class="panel r19-vault-panel">
+            <div class="panel-heading"><div><p class="eyebrow">PRIVATE VAULT</p><h4>Backups versionados</h4></div><span id="backupCountBadge" class="badge">0 versões</span></div>
+            <p class="helper">Cada versão contém os dados funcionais da carteira e preferências do usuário, mas nunca inclui senha ou token de sessão.</p>
+            <div id="vaultBackupList" class="r19-backup-list"></div>
+          </article>
+
+          <article class="panel r19-readiness-panel">
+            <div class="panel-heading"><div><p class="eyebrow">PUBLICAÇÃO</p><h4>Pronto para ambiente privado</h4></div><span class="badge">R19</span></div>
+            <div id="securityReadiness" class="r19-readiness-list"></div>
+            <div class="r19-readiness-note"><strong>Arquitetura da Rodada 19</strong><p>No projeto publicado, a sessão usa cookie HttpOnly/SameSite, os dados continuam separados por usuário e os backups do cofre ficam na base da aplicação. O standalone mantém apenas uma simulação local para teste visual.</p></div>
+          </article>
+        </div>
+
+        <article class="panel r19-audit-panel">
+          <div class="panel-heading"><div><p class="eyebrow">ACCESS JOURNAL</p><h4>Auditoria de segurança</h4></div><span id="securityAuditBadge" class="badge">últimos eventos</span></div>
+          <div id="securityAudit" class="r19-audit-list"></div>
+        </article>
+      </section>
+
+
+
+      <section id="cloudSection" class="view-section" hidden>
+        <div class="section-heading r22-heading">
+          <div><p class="eyebrow">CLOUD RELEASE · RODADA 22</p><h3>Nuvem & publicação</h3><p>Diagnóstico do ambiente publicado, banco persistente, sessão privada, backups automáticos e prontidão operacional de cada perfil.</p></div>
+          <div class="section-actions"><button id="refreshCloudStatus" class="secondary-button auto-width" type="button">↻ Atualizar status</button><button id="cloudBackupNow" class="primary-button auto-width" type="button">＋ Backup agora</button></div>
+        </div>
+        <article class="r22-cloud-hero">
+          <div><p class="eyebrow">PRIVATE CLOUD</p><h4 id="cloudHeroTitle">Ambiente protegido e persistente.</h4><p id="cloudHeroCopy">Quando publicada, a plataforma usa HTTPS, funções serverless e banco Postgres gerenciado pelo ambiente de hospedagem.</p><div class="r22-cloud-url"><span>URL</span><strong id="cloudSiteUrl">Prévia local</strong></div></div>
+          <div class="r22-cloud-score"><strong id="cloudReadyScore">—</strong><span>prontidão cloud</span><small id="cloudReadyLabel">verificando ambiente</small></div>
+        </article>
+        <div class="r22-cloud-grid">
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">INFRAESTRUTURA</p><h4>Saúde do ambiente</h4></div><span id="cloudEnvironmentBadge" class="badge">verificando</span></div><div id="cloudReadiness" class="r22-readiness-list"></div></article>
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">DADOS</p><h4>Persistência & isolamento</h4></div><span class="badge">por usuário</span></div><div id="cloudDataCards" class="r22-data-grid"></div></article>
+        </div>
+        <div class="r22-cloud-grid">
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">BACKUP AUTOMÁTICO</p><h4>Rotina do Private Vault</h4></div><span id="cloudBackupBadge" class="badge">—</span></div><div id="cloudBackupSummary" class="r22-backup-summary"></div><p class="helper">A rotina agendada roda diariamente no ambiente publicado e cria uma nova versão apenas quando a frequência configurada do usuário estiver vencida.</p></article>
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">SESSÃO</p><h4>Proteção server-side</h4></div><span id="cloudSessionBadge" class="badge">—</span></div><div id="cloudSessionSummary" class="r22-session-summary"></div><p class="helper">O tempo de inatividade agora também é validado no servidor, não apenas no navegador.</p></article>
+        </div>
+        <article class="panel r22-publish-panel"><div class="panel-heading"><div><p class="eyebrow">PUBLICATION CHECKLIST</p><h4>O que torna esta versão publicável</h4></div><span class="badge">v1.1</span></div><div class="r22-publish-steps"><div><span>01</span><strong>HTTPS</strong><small>Tráfego criptografado e HSTS.</small></div><div><span>02</span><strong>Banco persistente</strong><small>Dados relacionais isolados por usuário.</small></div><div><span>03</span><strong>Setup único</strong><small>Sem senha inicial gravada no código.</small></div><div><span>04</span><strong>Sessões privadas</strong><small>Cookie HttpOnly, SameSite e expiração.</small></div><div><span>05</span><strong>Backups automáticos</strong><small>Private Vault com retenção e rotina agendada.</small></div><div><span>06</span><strong>Auditoria</strong><small>Eventos de acesso e segurança registrados.</small></div></div></article>
+      </section>
+
+      <section id="integrationsSection" class="view-section" hidden>
+        <div class="section-heading r23-heading">
+          <div><p class="eyebrow">CONNECTED WEALTH · RODADA 23</p><h3>Integrações & sincronização</h3><p>Uma central única para cotações, benchmarks, proventos anunciados, notícias e conectores de importação — com histórico, agendamento e controle individual por carteira.</p></div>
+          <div class="section-actions"><button id="refreshIntegrations" class="secondary-button auto-width" type="button">↻ Atualizar status</button><button id="syncIntegrationsNow" class="primary-button auto-width" type="button">⟳ Sincronizar agora</button></div>
+        </div>
+
+        <article class="r23-integration-hero">
+          <div><p class="eyebrow">DATA BRIDGE</p><h4>Seus dados externos, com rastreabilidade.</h4><p>A plataforma não executa ordens. Ela consulta fontes autorizadas, atualiza informações permitidas, registra a origem e mantém um histórico das sincronizações.</p><div class="r23-last-sync"><span>Última sincronização</span><strong id="r23LastSync">Ainda não executada</strong></div></div>
+          <div class="r23-sync-score"><strong id="r23ProviderScore">—</strong><span>fontes prontas</span><small id="r23SyncStatus">aguardando diagnóstico</small></div>
+        </article>
+
+        <div class="r23-provider-grid" id="r23ProviderGrid"></div>
+
+        <div class="r23-layout">
+          <article class="panel r23-settings-panel">
+            <div class="panel-heading"><div><p class="eyebrow">SYNC POLICY</p><h4>O que pode sincronizar</h4></div><span class="badge">por perfil</span></div>
+            <label class="r23-toggle"><input id="r23MarketEnabled" type="checkbox"><span><strong>Cotações da carteira</strong><small>Atualiza ativos marcados com cotação automática usando a fonte de mercado configurada.</small></span></label>
+            <label class="r23-toggle"><input id="r23AgendaEnabled" type="checkbox"><span><strong>Proventos anunciados → Agenda</strong><small>Cria eventos corporativos para pagamentos já anunciados pela fonte, com proteção contra duplicidade.</small></span></label>
+            <label class="r23-toggle"><input id="r23BenchmarksEnabled" type="checkbox"><span><strong>Benchmarks & macro</strong><small>Registra observações de Selic, CDI, IPCA 12m e Ibovespa para acompanhamento histórico.</small></span></label>
+            <label class="r23-toggle r23-auto"><input id="r23AutoSyncEnabled" type="checkbox"><span><strong>Sincronização automática diária</strong><small>A função agendada verifica o horário escolhido no fuso de Brasília. Nada compra ou vende ativos.</small></span></label>
+            <label class="r23-hour-label">Horário diário · Brasília<select id="r23SyncHour"></select></label>
+            <button id="saveIntegrationSettings" class="primary-button" type="button">Salvar política de sincronização</button>
+          </article>
+
+          <article class="panel r23-benchmark-panel">
+            <div class="panel-heading"><div><p class="eyebrow">BENCHMARK FEED</p><h4>Últimas observações</h4></div><span id="r23BenchmarkBadge" class="badge">0 séries</span></div>
+            <div id="r23BenchmarkGrid" class="r23-benchmark-grid"></div>
+            <div class="r23-event-note"><strong id="r23SyncedEvents">0</strong><span>eventos corporativos sincronizados e futuros na Agenda</span><button class="text-button" type="button" data-r23-section="agenda">Abrir Agenda →</button></div>
+          </article>
+        </div>
+
+        <div class="r23-layout">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">CONNECTOR MAP</p><h4>Como os dados entram</h4></div><span class="badge">R23</span></div>
+            <div class="r23-flow">
+              <button type="button" data-r23-section="market"><span>01</span><strong>Mercado</strong><small>brapi.dev → carteira & watchlist</small></button>
+              <button type="button" data-r23-section="agenda"><span>02</span><strong>Agenda</strong><small>Proventos anunciados → eventos</small></button>
+              <button type="button" data-r23-section="live"><span>03</span><strong>Macro</strong><small>Selic · CDI · IPCA · IBOV</small></button>
+              <button type="button" data-r23-section="automation"><span>04</span><strong>Arquivos</strong><small>CSV/XLSX → pré-análise → importação</small></button>
+            </div>
+            <p class="helper">Conectores de arquivo continuam exigindo sua confirmação antes de gravar. As integrações de mercado e agenda atualizam somente dados informativos e registros auxiliares.</p>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">SYNC JOURNAL</p><h4>Histórico das integrações</h4></div><span id="r23RunsBadge" class="badge">últimas execuções</span></div>
+            <div id="r23Runs" class="r23-runs"></div>
+          </article>
+        </div>
+
+        <article class="panel r23-guardrail">
+          <div><span>!</span><div><strong>Integração não é execução.</strong><p>A Rodada 36 preserva a conciliação e o ciclo de revisão humana, acrescentando tratamento rastreável de divergências sem executar ordens nem corrigir dados automaticamente. A plataforma continua sem conexão para envio automático de ordens. Cotações, proventos, notícias e indicadores podem ter atrasos, revisões ou indisponibilidade na fonte. Confira documentos oficiais antes de decisões financeiras ou fiscais.</p></div></div>
+        </article>
+      </section>
+
+      <section id="reconciliationSection" class="view-section" hidden>
+        <div class="section-heading r34-heading">
+          <div><p class="eyebrow">RESOLUTION DESK · RODADA 35</p><h3>Conciliação & resolução</h3><p>Transforme divergências detectadas em casos rastreáveis, documente análise e evidências e registre o desfecho. Nenhum caso altera valores, posições, metas ou lançamentos automaticamente.</p></div>
+          <div class="section-actions"><button id="r34ExportEvidence" class="secondary-button auto-width" type="button">↓ Exportar evidência</button><button id="r35NewCase" class="secondary-button auto-width" type="button">＋ Abrir caso</button><button id="r34RecordReview" class="primary-button auto-width" type="button">＋ Registrar conferência</button></div>
+        </div>
+        <div class="r34-metric-grid">
+          <article class="r34-metric"><span>Checks consistentes</span><strong id="r34OkCount">0</strong><small>sem diferença material</small></article>
+          <article class="r34-metric"><span>Pontos de atenção</span><strong id="r34AttentionCount">0</strong><small>exigem revisão humana</small></article>
+          <article class="r34-metric"><span>Não verificáveis</span><strong id="r34InfoCount">0</strong><small>faltam dados de origem</small></article>
+          <article class="r34-metric"><span>Última conferência</span><strong id="r34LastReview">—</strong><small id="r34LastReviewMeta">nenhum registro</small></article>
+        </div>
+        <div class="r34-grid-main">
+          <article class="panel r34-checks-panel"><div class="panel-heading"><div><p class="eyebrow">INTEGRITY CHECKS</p><h4>Conferência cruzada</h4></div><span id="r34OverallBadge" class="badge">calculando</span></div><div id="r34Checks" class="r34-check-list"></div><p class="helper">Tolerâncias pequenas de arredondamento são ignoradas. Diferenças maiores permanecem apenas como alerta até que você revise a origem e os registros.</p></article>
+          <article class="panel r34-lineage-panel"><div class="panel-heading"><div><p class="eyebrow">DATA LINEAGE</p><h4>Rastreabilidade das fontes</h4></div><span class="badge">somente leitura</span></div><div id="r34Lineage" class="r34-lineage"></div></article>
+        </div>
+
+        <div class="r35-case-metric-grid">
+          <article class="r35-case-metric"><span>Casos abertos</span><strong id="r35OpenCases">0</strong><small>aguardam tratamento</small></article>
+          <article class="r35-case-metric"><span>Em análise</span><strong id="r35InvestigatingCases">0</strong><small>com investigação ativa</small></article>
+          <article class="r35-case-metric"><span>Resolvidos</span><strong id="r35ResolvedCases">0</strong><small>com conclusão registrada</small></article>
+          <article class="r35-case-metric"><span>Descartados</span><strong id="r35DismissedCases">0</strong><small>justificativa preservada</small></article>
+        </div>
+        <article class="panel r35-cases-panel">
+          <div class="panel-heading"><div><p class="eyebrow">RESOLUTION QUEUE</p><h4>Tratamento das divergências</h4></div><div class="r35-case-controls"><select id="r35CaseFilter" aria-label="Filtrar casos"><option value="active">Ativos</option><option value="all">Todos</option><option value="OPEN">Abertos</option><option value="INVESTIGATING">Em análise</option><option value="RESOLVED">Resolvidos</option><option value="DISMISSED">Descartados</option></select><span id="r35CaseCount" class="badge">0 casos</span></div></div>
+          <div id="r35CaseList" class="r35-case-list"></div>
+          <p class="helper">Resolver um caso registra a conclusão e a evidência. Para corrigir um valor, edite manualmente o módulo de origem e execute a conciliação novamente.</p>
+        </article>
+        <div class="r34-grid-secondary">
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">POSITION TRACE</p><h4>Posição × movimentações</h4></div><span id="r34PositionBadge" class="badge">—</span></div><div id="r34PositionTrace" class="r34-position-trace"></div></article>
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">REVIEW JOURNAL</p><h4>Histórico de conferências</h4></div><span id="r34ReviewCount" class="badge">0 registros</span></div><div id="r34ReviewHistory" class="r34-review-history"></div></article>
+        </div>
+        <article class="panel r34-guardrail"><div><span>≋</span><div><strong>Conferir não significa sobrescrever.</strong><p>A plataforma detecta, transforma divergências em casos e documenta a resolução, mas não altera quantidades, preços médios, saldos, proventos, metas ou lançamentos. Toda correção continua sendo uma ação humana no módulo de origem.</p></div></div></article>
+      </section>
+
+      <section id="releaseSection" class="view-section" hidden>
+        <div class="section-heading r20-heading">
+          <div><p class="eyebrow">PRODUCTION READINESS · RODADA 36</p><h3>Central 2.4</h3><p>A R36 encerra o ciclo de desenvolvimento e transforma a base validada em um pacote de produção: infraestrutura, segurança, backups, conciliação e publicação passam por um gate explícito antes do uso real.</p></div>
+          <div class="section-actions"><button id="r20ExportSnapshot" class="secondary-button auto-width" type="button">↓ Exportar dossiê final</button><button id="r20InstallApp" class="primary-button auto-width" type="button">＋ Instalar aplicativo</button></div>
+        </div>
+
+        <article class="r20-launch-hero r33-final-hero">
+          <div class="r20-launch-copy"><p class="eyebrow">CONNECTED WEALTH · 2.4.0</p><h4 id="r20LaunchTitle">Pronta para sair do laboratório e entrar em produção.</h4><p id="r20LaunchCopy">A Rodada 36 fecha o ciclo com Launch Control, auditoria final e documentação de implantação. O funcionamento diário continua humano, privado e rastreável.</p><div class="r20-launch-meta"><span><b>36</b><small>rodadas acumuladas</small></span><span><b id="r20ModulesCount">—</b><small>módulos</small></span><span><b id="r20LaunchScoreMini">—</b><small>readiness</small></span></div></div>
+          <div class="r20-score-wrap"><div id="r20ScoreRing" class="r20-score-ring"><div><strong id="r20Score">0%</strong><span>readiness</span></div></div><p id="r20ScoreText">Avaliando a base atual…</p></div>
+        </article>
+
+        <article class="panel r21-audit-certificate r33-audit-certificate">
+          <div class="panel-heading"><div><p class="eyebrow">STRUCTURAL AUDIT · 2.4.0</p><h4>Certificado estrutural da Rodada 36</h4></div><span class="badge positive">ciclo fechado</span></div>
+          <div class="r21-audit-grid r33-audit-grid">
+            <div><strong id="r33AuditRoutes">—</strong><span>rotas da navegação com seção correspondente</span></div>
+            <div><strong id="r33AuditIds">—</strong><span>IDs de interface únicos no build final</span></div>
+            <div><strong id="r33AuditRefs">—</strong><span>referências estáticas do JavaScript encontradas no DOM</span></div>
+            <div><strong id="r33AuditEndpoints">—</strong><span>funções serverless presentes no pacote final</span></div>
+          </div>
+          <p class="r21-audit-note"><strong>Guardrail permanente:</strong> o app shell não intercepta respostas de <code>/api/</code> nem de <code>/.netlify/functions/</code>. A Rodada 36 também não adiciona execução automática de ordens, recomendação automática, encerramento automático de casos ou alteração silenciosa das metas do usuário.</p>
+        </article>
+
+        <article class="panel r36-launch-panel">
+          <div class="panel-heading"><div><p class="eyebrow">PRODUCTION GATE</p><h4>Gate de lançamento</h4></div><div class="r36-launch-actions"><span id="r36LaunchBadge" class="badge">aguardando verificação</span><button id="r36RefreshLaunch" class="secondary-button small-button" type="button">↻ Verificar produção</button><button id="r36ExportLaunch" class="primary-button small-button" type="button">↓ Exportar checklist</button></div></div>
+          <div class="r36-launch-hero"><div><span>Ambiente</span><strong id="r36LaunchEnvironment">Prévia local</strong><small id="r36LaunchUrl">Publique no Netlify para validar a infraestrutura real.</small></div><div><span>Última verificação</span><strong id="r36LaunchCheckedAt">—</strong><small>infraestrutura + continuidade + segurança</small></div><div><span>Gate</span><strong id="r36LaunchScore">—</strong><small id="r36LaunchSummary">Aguardando verificação</small></div></div>
+          <div id="r36LaunchChecks" class="r36-launch-checks"></div>
+          <p class="helper">O gate não publica nem modifica dados. Ele apenas verifica pré-requisitos de produção e aponta o que precisa ser concluído antes do uso real.</p>
+        </article>
+
+        <div class="r20-grid r20-grid-main">
+          <article class="panel r20-readiness-panel">
+            <div class="panel-heading"><div><p class="eyebrow">FINAL READINESS</p><h4>Prontidão operacional 2.4</h4></div><span id="r20ReadinessBadge" class="badge">0 de 10</span></div>
+            <div id="r20ReadinessList" class="r20-readiness-list"></div>
+          </article>
+          <article class="panel r20-health-panel">
+            <div class="panel-heading"><div><p class="eyebrow">DATA HEALTH</p><h4>Saúde operacional</h4></div><span class="badge">ao vivo</span></div>
+            <div id="r20HealthGrid" class="r20-health-grid"></div>
+            <div class="r20-health-note"><strong>Humano no controle.</strong><p>A Central 2.4 reúne o gate de produção e as pendências operacionais, mas não compra, vende, rebalanceia, encerra decisões ou altera metas automaticamente.</p></div>
+          </article>
+        </div>
+
+        <article class="panel r33-completion-panel">
+          <div class="panel-heading"><div><p class="eyebrow">CONTINUITY CHECK</p><h4>Quatro garantias do fechamento</h4></div><span class="badge">R33</span></div>
+          <div class="r33-final-grid">
+            <div><span>01</span><strong id="r33ReviewState">—</strong><small>fila de revisões humanas</small></div>
+            <div><span>02</span><strong id="r33BackupState">—</strong><small>continuidade por backup</small></div>
+            <div><span>03</span><strong id="r33OwnershipState">Portátil</strong><small>dossiê JSON independente</small></div>
+            <div><span>04</span><strong>Manual</strong><small>execução de decisões preservada</small></div>
+          </div>
+        </article>
+
+        <article class="panel r20-ritual-panel">
+          <div class="panel-heading"><div><p class="eyebrow">OPERATING RITUAL</p><h4>Ciclo recorrente em 6 passos</h4></div><span class="badge">20–30 min</span></div>
+          <div id="r20Ritual" class="r20-ritual"></div>
+        </article>
+
+        <div class="r20-grid r20-grid-secondary">
+          <article class="panel r20-portability-panel">
+            <div class="panel-heading"><div><p class="eyebrow">CONTINUIDADE & PORTABILIDADE</p><h4>O ciclo pode continuar fora desta tela</h4></div><span class="badge">JSON</span></div>
+            <div class="r20-portability-card"><span>01</span><div><strong>Dossiê operacional 2.4</strong><p>Exporta carteira, movimentações, proventos, planejamento, governança, alertas, monitoramento, ciclo de revisão, preferências e diagnóstico de prontidão do perfil atual.</p></div></div>
+            <div class="r20-portability-card"><span>02</span><div><strong>Private Vault</strong><p>Backups versionados permanecem separados por usuário e independentes do dossiê exportável.</p><button class="text-button" type="button" data-r20-section="security">Abrir cofre →</button></div></div>
+            <div class="r20-portability-card"><span>03</span><div><strong>Importação rastreável</strong><p>A Central de Automação mantém histórico dos lotes para conferência, reconciliação e rastreabilidade.</p><button class="text-button" type="button" data-r20-section="automation">Abrir automação →</button></div></div>
+          </article>
+          <article class="panel r20-install-panel">
+            <div class="panel-heading"><div><p class="eyebrow">APP EXPERIENCE</p><h4>Instalável & responsiva</h4></div><span id="r20OfflineBadge" class="badge">verificando</span></div>
+            <div class="r20-device-frame"><div class="r20-device-top"><i></i><i></i><i></i></div><div class="r20-device-body"><span class="brand-mark">PI</span><strong>Plataforma de Investimentos</strong><small>Connected Wealth 2.4.0 · Production Launch</small></div></div>
+            <p id="r20InstallStatus" class="helper">Na versão publicada, a plataforma pode ser instalada como aplicativo no navegador compatível e mantém apenas o app shell elegível para cache.</p>
+          </article>
+        </div>
+
+        <div class="r20-grid r20-grid-secondary">
+          <article class="panel r20-release-panel">
+            <div class="panel-heading"><div><p class="eyebrow">RELEASE MAP</p><h4>Do protótipo à Final Release</h4></div><span class="badge">R01 → R36</span></div>
+            <div class="r20-release-map r33-release-map">
+              <div><span>01–10</span><strong>Fundação & planejamento</strong><small>Carteira, movimentações, mercado, decisões, vida financeira, cenários, fechamento e relatórios.</small></div>
+              <div><span>11–20</span><strong>Governança & Private Wealth OS</strong><small>Mandato, identidade, personalização, inteligência patrimonial, fiscal, automação, segurança e produto 1.0.</small></div>
+              <div><span>21–27</span><strong>Cloud & integrações</strong><small>Auditoria, publicação, persistência, conectores, reconciliação e endurecimento operacional.</small></div>
+              <div><span>28–31</span><strong>Live Intelligence</strong><small>Desk ao vivo, alertas, monitoramento por ativo, diário e ciclo de revisão humana.</small></div>
+              <div><span>33</span><strong>Final Release 2.1</strong><small>A Rodada 32 foi absorvida pelo fechamento: auditoria final, prontidão, continuidade e dossiê portátil.</small></div>
+            <div><span>34–36</span><strong>Resolução & lançamento</strong><small>Tratamento de divergências, auditoria final, production gate e pacote GitHub + Netlify.</small></div></div>
+          </article>
+          <article class="panel r20-shortcuts-panel">
+            <div class="panel-heading"><div><p class="eyebrow">BASELINE ANTERIOR</p><h4>O que permanece preservado</h4></div><span class="badge">R33 · 2.1.0</span></div>
+            <div class="r20-key-list"><div><kbd>Dados</kbd><span>isolados por usuário</span></div><div><kbd>Alertas</kbd><span>descritivos, não executores</span></div><div><kbd>Revisões</kbd><span>humanas e documentadas</span></div><div><kbd>Backup</kbd><span>versionado e exportável</span></div></div>
+            <p class="helper">A R33 encerra este ciclo como uma baseline estável. Evoluções futuras podem partir desta versão sem reabrir o escopo das rodadas anteriores.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="analysisSection" class="view-section" hidden>
+        <div class="section-heading"><div><p class="eyebrow">ANÁLISE PATRIMONIAL</p><h3>Carteira em perspectiva</h3><p>Compare a evolução registrada com o benchmark, acompanhe concentração, diversificação e o calendário de renda da carteira.</p></div><span class="badge">visão analítica</span></div>
+        <div class="metric-grid">
+          <article class="metric-card"><span>Carteira no período</span><strong id="analysisPortfolioReturn">0,00%</strong><small>variação dos snapshots</small></article>
+          <article class="metric-card"><span>Benchmark no período</span><strong id="analysisBenchmarkReturn">0,00%</strong><small>referência disponível</small></article>
+          <article class="metric-card"><span>Diferença relativa</span><strong id="analysisGap">0,00 p.p.</strong><small>carteira − benchmark</small></article>
+          <article class="metric-card"><span>Top 5 posições</span><strong id="analysisConcentration">0,00%</strong><small>do patrimônio atual</small></article>
+        </div>
+        <div class="overview-grid analysis-grid">
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">COMPARAÇÃO</p><h4>Carteira x benchmark</h4></div><span class="badge">base 100</span></div><div class="chart-shell large-chart"><canvas id="analysisChart" aria-label="Comparação entre carteira e benchmark"></canvas><div id="analysisChartEmpty" class="chart-empty">São necessários dados históricos da carteira e do benchmark para comparar.</div></div><div class="chart-legend"><span><i class="legend-swatch series-a"></i>Carteira</span><span><i class="legend-swatch series-c"></i>Benchmark</span></div></article>
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">CONCENTRAÇÃO</p><h4>Maiores posições</h4></div><span class="badge">peso atual</span></div><div id="analysisTopPositions" class="analysis-list"></div></article>
+        </div>
+        <div class="overview-grid analysis-grid">
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">RENDA</p><h4>Calendário de proventos</h4></div><span class="badge">histórico</span></div><div id="analysisIncomeCalendar" class="analysis-list"></div></article>
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">LEITURA</p><h4>Pontos de atenção</h4></div><span class="badge">descritivo</span></div><div id="analysisNotes" class="analysis-notes"></div></article>
+        </div>
+      </section>
+
+      <section id="decisionSection" class="view-section" hidden>
+        <div class="section-heading decision-heading">
+          <div><p class="eyebrow">CENTRAL EXECUTIVA</p><h3>Decisões da carteira</h3><p>Uma leitura objetiva das metas, qualidade dos dados, alertas e próximos eventos. As prioridades seguem as regras e metas que você configurou.</p></div>
+          <div class="section-actions"><button id="decisionGoReports" class="secondary-button auto-width" type="button">Abrir relatórios</button><button id="decisionGoRules" class="primary-button auto-width" type="button">Configurar regras</button></div>
+        </div>
+
+        <div class="executive-metrics">
+          <article class="executive-metric"><span>Fora da faixa</span><strong id="decisionOutsideCount">0</strong><small>classes além da tolerância</small></article>
+          <article class="executive-metric"><span>Cotações antigas</span><strong id="decisionStaleCount">0</strong><small>dados que pedem atualização</small></article>
+          <article class="executive-metric"><span>Dados incompletos</span><strong id="decisionMissingCount">0</strong><small>campos essenciais pendentes</small></article>
+          <article class="executive-metric"><span>Alertas ativos</span><strong id="decisionAlertCount">0</strong><small>regras ou watchlist disparadas</small></article>
+        </div>
+
+        <div class="executive-grid">
+          <article class="panel executive-focus-card">
+            <div class="panel-heading"><div><p class="eyebrow">PRIORIDADE DE ALOCAÇÃO</p><h4>Maior distância da meta</h4></div><span id="decisionFocusBadge" class="badge">—</span></div>
+            <div id="decisionFocus" class="executive-focus"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">PRÓXIMOS EVENTOS</p><h4>Agenda que se aproxima</h4></div><span class="badge">30 dias</span></div>
+            <div id="decisionEvents" class="executive-list"></div>
+          </article>
+        </div>
+
+        <div class="executive-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">QUALIDADE DOS DADOS</p><h4>Base para decidir</h4></div><span id="decisionDataBadge" class="badge">—</span></div>
+            <div id="decisionDataHealth" class="executive-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">REGRAS AUTOMÁTICAS</p><h4>Sinais atuais</h4></div><button id="decisionEvaluateRules" class="text-button" type="button">Reavaliar →</button></div>
+            <div id="decisionRuleSignals" class="executive-list"></div>
+          </article>
+        </div>
+
+        <div class="decision-hero decision-plan-zone">
+          <article class="panel contribution-panel decision-input-panel">
+            <p class="eyebrow">PRÓXIMO APORTE</p>
+            <h4>Simular distribuição</h4>
+            <div class="money-input-wrap"><span>R$</span><input id="decisionContributionInput" inputmode="decimal" placeholder="5.000,00" /></div>
+            <button id="decisionCalculateButton" class="primary-button" type="button">Montar plano de aporte</button>
+            <p class="helper">O cálculo usa apenas o novo dinheiro, prioriza desvios das metas e não força vendas.</p>
+          </article>
+
+          <article class="panel strategy-status-panel">
+            <div class="panel-heading"><div><p class="eyebrow">DISCIPLINA DE ALOCAÇÃO</p><h4>Status da estratégia</h4></div><span id="strategyToleranceBadge" class="badge">± 3,00%</span></div>
+            <div id="strategyStatus" class="strategy-status-grid"></div>
+            <div class="tolerance-control">
+              <label for="strategyTolerance">Faixa de tolerância por classe</label>
+              <div class="percent-input"><input id="strategyTolerance" inputmode="decimal" value="3,00"><span>%</span></div>
+              <button id="saveStrategyButton" class="secondary-button" type="button">Salvar tolerância</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="decision-results-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">DISTRIBUIÇÃO SUGERIDA</p><h4 id="decisionPlanTitle">Aguardando valor de aporte</h4></div><span id="decisionPlanBasis" class="badge">—</span></div>
+            <div id="decisionPlan" class="decision-plan"><div class="empty-state"><strong>Informe um valor acima.</strong><p>A plataforma mostrará quanto do aporte iria para cada classe ou ativo para aproximar a carteira das metas definidas por você.</p></div></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">RADAR</p><h4>Leituras relevantes</h4></div><span class="badge">descritivo</span></div>
+            <div id="decisionRadar" class="decision-radar"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="rebalanceSection" class="view-section" hidden>
+        <div class="section-heading"><div><p class="eyebrow">ESTRATÉGIA</p><h3>Rebalanceamento</h3><p>A plataforma executa as metas que você definiu; ela não escolhe sua estratégia por conta própria.</p></div></div>
+        <div class="rebalance-layout">
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">METAS POR CLASSE</p><h4>Distribuição desejada</h4></div><span id="targetTotalBadge" class="badge">0%</span></div><form id="targetsForm" class="targets-grid"></form><button id="saveTargetsButton" class="secondary-button" type="button">Salvar metas por classe</button><p class="helper">Se as metas individuais dos ativos somarem 100%, elas têm prioridade. Caso contrário, o cálculo usa as metas por classe.</p></article>
+          <article class="panel contribution-panel"><p class="eyebrow">PRÓXIMO APORTE</p><h4>Quanto você quer investir agora?</h4><div class="money-input-wrap"><span>R$</span><input id="contributionInput" inputmode="decimal" placeholder="0,00" /></div><button id="calculateRebalanceButton" class="primary-button" type="button">Calcular distribuição</button><p class="helper">O cálculo prioriza posições abaixo da meta e não força vendas.</p></article>
+        </div>
+        <article id="rebalanceResultPanel" class="panel rebalance-results" hidden><div class="panel-heading"><div><p class="eyebrow">SUGESTÃO DE DISTRIBUIÇÃO</p><h4 id="rebalanceResultTitle">Próximo aporte</h4></div><span id="rebalanceBasis" class="badge"></span></div><p id="rebalanceNote" class="helper"></p><div id="rebalanceResults"></div></article>
+      </section>
+
+      <section id="marketSection" class="view-section" hidden>
+        <div class="section-heading"><div><p class="eyebrow">DADOS DE MERCADO</p><h3>Mercado & posições</h3><p>Cotações atualizadas pela fonte externa com horário da consulta. A recência depende do plano de dados conectado.</p></div><button id="refreshMarketButton" class="primary-button auto-width" type="button">↻ Atualizar mercado</button></div>
+        <div id="marketSourceNotice" class="source-notice">Fonte: brapi.dev. Tickers fora do sandbox exigem <code>BRAPI_TOKEN</code> no ambiente Netlify.</div>
+        <div id="marketCards" class="market-card-grid"></div>
+        <article class="panel market-analysis-panel"><div class="panel-heading"><div><p class="eyebrow">ANÁLISE DESCRITIVA</p><h4>O que os dados estão mostrando</h4></div><span class="badge">sem previsão</span></div><div id="marketAnalysis" class="analysis-copy"></div></article>
+      </section>
+
+      <section id="liveSection" class="view-section" hidden>
+        <div class="section-heading live-heading">
+          <div><p class="eyebrow">LIVE DESK · RODADA 36</p><h3>Brasil + mercados globais</h3><p>A Rodada 36 preserva o acompanhamento humano e conecta o Live Desk ao tratamento rastreável de divergências, sem automação de ordens.</p></div>
+          <div class="live-actions">
+            <div class="live-clock"><span>Agora</span><strong id="liveClock">--:--:--</strong></div>
+            <button id="customizeLiveButton" class="secondary-button auto-width" type="button">⚙ Personalizar</button>
+            <button id="refreshLiveButton" class="primary-button auto-width" type="button">↻ Atualizar desk</button>
+          </div>
+        </div>
+        <div id="liveSourceNotice" class="source-notice">Brasil: brapi.dev via backend. Exterior: provedor global opcional via backend. Horário e disponibilidade variam conforme fonte e plano conectado.</div>
+
+        <div id="liveSessionStrip" class="live-session-strip"></div>
+
+        <article class="panel live-control-panel">
+          <div class="live-search-row">
+            <div class="live-search-box" role="search">
+              <span class="live-search-icon" aria-hidden="true">⌕</span>
+              <input id="liveSearchInput" type="search" autocomplete="off" spellcheck="false" placeholder="Pesquisar ativo, índice, moeda ou cripto…" aria-label="Pesquisar na central ao vivo" />
+              <button id="liveSearchClear" class="live-search-clear" type="button" aria-label="Limpar pesquisa" hidden>×</button>
+              <button id="liveSearchButton" class="live-search-submit" type="button">Buscar</button>
+            </div>
+            <span id="liveSearchHint" class="live-search-hint">Digite, por exemplo: PETR4, dólar, Nasdaq ou BTC.</span>
+          </div>
+          <div id="liveQuickSearch" class="live-quick-search" aria-label="Atalhos de pesquisa">
+            <button type="button" data-live-query="IBOV">Ibovespa</button><button type="button" data-live-query="PETR4">PETR4</button><button type="button" data-live-query="SPY">S&amp;P 500</button><button type="button" data-live-query="QQQ">Nasdaq</button><button type="button" data-live-query="USD-BRL">Dólar</button><button type="button" data-live-query="BTC">Bitcoin</button><button type="button" data-live-query="USO">Petróleo</button><button type="button" data-live-query="TLT">Treasury longo</button>
+          </div>
+          <div id="liveSearchResult" class="live-search-result" hidden></div>
+          <div class="live-control-row">
+            <label class="switch-line live-switch"><input id="liveAutoToggle" type="checkbox" checked><span><strong>Atualização automática</strong><small>Reconsulta o backend enquanto a plataforma estiver aberta.</small></span></label>
+            <label class="live-interval-label">Intervalo<select id="liveInterval"><option value="60">60 s</option><option value="120">2 min</option><option value="300">5 min</option></select></label>
+            <div class="live-countdown"><span>Próxima consulta</span><strong id="liveCountdown">60 s</strong></div>
+            <div class="live-countdown"><span>Última consulta</span><strong id="liveLastUpdate">—</strong></div>
+          </div>
+          <div id="liveScopeTabs" class="live-scope-tabs" role="tablist" aria-label="Filtro da central ao vivo">
+            <button type="button" class="active" data-live-scope="all">Tudo</button>
+            <button type="button" data-live-scope="br">Brasil</button>
+            <button type="button" data-live-scope="us">EUA</button>
+            <button type="button" data-live-scope="global">Exterior</button>
+            <button type="button" data-live-scope="commodity">Commodities</button>
+            <button type="button" data-live-scope="rates">Juros globais</button>
+            <button type="button" data-live-scope="fx">Câmbio</button>
+            <button type="button" data-live-scope="crypto">Cripto</button>
+            <button type="button" data-live-scope="macro">Macro</button>
+          </div>
+        </article>
+
+        <div id="liveModules" class="live-modules">
+        <div id="liveDeskSummary" class="live-desk-summary" data-live-module="summary"></div>
+
+        <article class="panel live-alert-center-panel" data-live-module="alerts">
+          <div class="panel-heading"><div><p class="eyebrow">CENTRAL DE ALERTAS · R34</p><h4>Monitoramento configurável</h4></div><button id="manageLiveAlertsButton" class="secondary-button small-button" type="button">⚙ Configurar</button></div>
+          <div id="liveAlertStats" class="live-alert-stats"></div>
+          <div class="live-alert-toolbar"><label>Status<select id="liveAlertFilter"><option value="open">Abertos</option><option value="all">Todos ativos</option><option value="ack">Reconhecidos</option><option value="muted">Silenciados</option></select></label><label>Nível<select id="liveAlertSeverity"><option value="all">Todos</option><option value="critical">Alta atenção</option><option value="warning">Atenção</option><option value="info">Informativo</option></select></label><span class="live-alert-toolbar-note">Alertas são informativos e não executam ordens.</span></div>
+          <div id="liveAlerts" class="live-alert-center-list"></div>
+          <div class="live-alert-history-head"><div><strong>Histórico recente</strong><small>Condições que deixaram de estar ativas</small></div><button id="clearLiveAlertHistoryButton" class="text-button" type="button">Limpar histórico</button></div>
+          <div id="liveAlertHistory" class="live-alert-history"></div>
+        </article>
+
+        <article class="panel live-monitor-panel" data-live-module="monitoring">
+          <div class="panel-heading">
+            <div><p class="eyebrow">MONITORAMENTO POR ATIVO · R34</p><h4>Regras, diário & ciclo de revisão</h4></div>
+            <button id="addLiveMonitorRuleButton" class="primary-button small-button" type="button">＋ Nova regra</button>
+          </div>
+          <p class="live-monitor-intro">Crie condições próprias, registre o contexto humano e programe quando deseja reavaliá-lo. Uma ocorrência ou revisão nunca gera ordem automática.</p>
+          <div id="liveMonitorStats" class="live-monitor-stats"></div>
+          <section class="live-review-queue">
+            <div class="live-monitor-subhead"><div><strong>Fila de revisão</strong><small>Registros do diário com acompanhamento programado</small></div><span id="liveReviewBadge" class="badge">0 pendentes</span></div>
+            <div id="liveReviewQueue" class="live-review-queue-list"></div>
+          </section>
+          <div class="live-monitor-toolbar">
+            <label>Exibir<select id="liveMonitorFilter"><option value="all">Todas as regras</option><option value="triggered">Acionadas agora</option><option value="active">Ativas</option><option value="paused">Pausadas</option></select></label>
+            <span class="live-monitor-toolbar-note">Preço e variação seguem a mesma fonte e horário exibidos no Live Desk.</span>
+          </div>
+          <div id="liveMonitorRules" class="live-monitor-rules"></div>
+          <div class="live-monitor-lower">
+            <section>
+              <div class="live-monitor-subhead"><div><strong>Linha do tempo</strong><small>Ativações e encerramentos recentes</small></div><button id="clearLiveMonitorEventsButton" class="text-button" type="button">Limpar</button></div>
+              <div id="liveMonitorEvents" class="live-monitor-events"></div>
+            </section>
+            <section>
+              <div class="live-monitor-subhead"><div><strong>Diário de decisões</strong><small>Notas, revisões e desfechos vinculados a alertas e regras</small></div><select id="liveDecisionFilter" class="inline-select live-decision-filter"><option value="all">Todos</option><option value="open">Em acompanhamento</option><option value="due">Revisão vencida</option><option value="closed">Encerrados</option></select></div>
+              <div id="liveMonitorDecisions" class="live-monitor-decisions"></div>
+            </section>
+          </div>
+        </article>
+
+        <div class="overview-grid live-r28-primary-grid" data-live-module="chartnews">
+          <article class="panel live-chart-panel">
+            <div class="panel-heading"><div><p class="eyebrow">GRÁFICO · R34</p><h4>Intraday & histórico</h4></div><span id="liveChartSource" class="badge">aguardando</span></div>
+            <div class="live-chart-toolbar"><select id="liveChartAsset" aria-label="Ativo do gráfico"></select><div id="liveChartRanges" class="live-chart-ranges" role="group" aria-label="Período do gráfico"><button type="button" class="active" data-live-range="1D">1D</button><button type="button" data-live-range="5D">5D</button><button type="button" data-live-range="1M">1M</button><button type="button" data-live-range="6M">6M</button><button type="button" data-live-range="1Y">1A</button></div></div>
+            <div class="live-chart-meta"><div><span>Ativo</span><strong id="liveChartTitle">—</strong></div><div><span>Último</span><strong id="liveChartLast">—</strong></div><div><span>Período</span><strong id="liveChartDelta">—</strong></div></div>
+            <div class="chart-shell live-history-chart"><canvas id="liveHistoryChart" aria-label="Histórico do ativo selecionado"></canvas><div id="liveHistoryChartEmpty" class="chart-empty">Selecione um ativo com histórico disponível.</div></div>
+            <p id="liveChartNote" class="helper">O histórico usa a fonte disponível para o ativo e pode ter granularidade ou atraso diferentes entre mercados.</p>
+          </article>
+          <article class="panel live-news-panel">
+            <div class="panel-heading"><div><p class="eyebrow">NOTÍCIAS DO ATIVO</p><h4 id="liveNewsTitle">Contexto do mercado</h4></div><button id="refreshLiveDetailButton" class="secondary-button small-button" type="button">Atualizar</button></div>
+            <div id="liveAssetNews" class="live-asset-news"></div>
+            <p class="helper">As manchetes são links externos e não representam recomendação da plataforma.</p>
+          </article>
+        </div>
+
+        <div class="overview-grid live-r28-events-grid" data-live-module="events">
+          <article class="panel live-economic-panel">
+            <div class="panel-heading"><div><p class="eyebrow">CALENDÁRIO ECONÔMICO</p><h4>Próximos eventos macro</h4></div><span id="liveEconomicSource" class="badge">fonte real</span></div>
+            <div id="liveEconomicCalendar" class="live-economic-calendar"></div>
+          </article>
+          <article class="panel live-relevant-events-panel">
+            <div class="panel-heading"><div><p class="eyebrow">EVENTOS RELEVANTES</p><h4>Carteira + mercado</h4></div><span class="badge">7 dias</span></div>
+            <div id="liveRelevantEvents" class="live-relevant-events"></div>
+          </article>
+        </div>
+
+        <article class="panel live-briefing-panel" data-live-module="briefing">
+          <div class="panel-heading"><div><p class="eyebrow">DESK BRIEFING · R34</p><h4>O que está se destacando agora</h4></div><span class="badge">leitura automática</span></div>
+          <div id="liveDeskBriefing" class="live-desk-briefing"></div>
+          <p class="helper">Resumo descritivo calculado apenas com os dados disponíveis no desk. Não é previsão, recomendação ou sinal de negociação.</p>
+        </article>
+
+        <article class="panel live-favorites-panel" data-live-module="favorites">
+          <div class="panel-heading"><div><p class="eyebrow">MEU RADAR</p><h4>Favoritos do Live Desk</h4></div><span class="badge">★ clique nos cards</span></div>
+          <div id="liveFavorites" class="live-favorites-grid"></div>
+        </article>
+
+        <article class="panel live-currency-panel" data-live-module="currencies">
+          <div class="panel-heading"><div><p class="eyebrow">MOEDAS AGORA</p><h4>Quanto custa cada moeda em reais</h4></div><span class="badge">1 unidade → BRL</span></div>
+          <div id="liveCurrencyGrid" class="live-currency-grid"></div>
+          <p class="helper live-currency-note">A cotação exibida é a referência recebida da fonte conectada. Bancos, cartões e casas de câmbio podem aplicar spreads, tarifas e impostos próprios.</p>
+        </article>
+
+        <div id="liveMacroGrid" class="live-market-grid live-market-grid-r26" data-live-module="market"></div>
+
+        <div class="overview-grid live-intelligence-grid" data-live-module="intelligence">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">COMMODITIES</p><h4>Metais & energia</h4></div><span class="badge">proxies globais</span></div>
+            <div id="liveCommodityBoard" class="live-commodity-board"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">JUROS & RENDA FIXA</p><h4>Brasil + Treasuries</h4></div><span class="badge">taxas + ETFs proxy</span></div>
+            <div id="liveRatesBoard" class="live-rates-board"></div>
+          </article>
+        </div>
+
+        <div class="overview-grid live-r27-tools-grid" data-live-module="tools">
+          <article class="panel live-comparator-panel">
+            <div class="panel-heading"><div><p class="eyebrow">COMPARADOR</p><h4>Coloque dois mercados lado a lado</h4></div><span class="badge">dados observados</span></div>
+            <div class="live-compare-controls"><select id="liveCompareA" aria-label="Primeiro ativo do comparador"></select><button id="liveCompareSwap" type="button" class="secondary-button small-button" title="Trocar lados">⇄</button><select id="liveCompareB" aria-label="Segundo ativo do comparador"></select></div>
+            <div id="liveCompareResult" class="live-compare-result"></div>
+          </article>
+          <article class="panel live-risk-panel">
+            <div class="panel-heading"><div><p class="eyebrow">TERMÔMETRO DE MERCADO</p><h4>Amplitude & dispersão</h4></div><span class="badge">heurística descritiva</span></div>
+            <div id="liveRiskGauge" class="live-risk-gauge"></div>
+          </article>
+        </div>
+
+        <div class="overview-grid live-command-grid" data-live-module="world">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">WORLD BOARD</p><h4>Índices e referências globais</h4></div><span class="badge">Brasil + exterior</span></div>
+            <div id="liveWorldBoard" class="live-world-board"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">MAPA DE CALOR</p><h4>Força dos mercados</h4></div><span class="badge">variação observada</span></div>
+            <div id="liveHeatmap" class="live-heatmap"></div>
+          </article>
+        </div>
+
+        <div class="overview-grid live-desk-grid" data-live-module="movers">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">MAIORES MOVIMENTOS</p><h4>Radar do desk</h4></div><span class="badge">variação observada</span></div>
+            <div id="liveMarketMovers" class="live-movers-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">BRASIL × EXTERIOR</p><h4>Leitura por bloco</h4></div><span class="badge">média simples</span></div>
+            <div id="liveGlobalPulse" class="live-global-pulse"></div>
+          </article>
+        </div>
+
+        <div class="overview-grid live-lower-grid" data-live-module="portfolio">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">IMPACTO NA CARTEIRA</p><h4>Movimento diário ponderado</h4></div><span class="badge">estimativa</span></div>
+            <div id="livePortfolioImpact" class="live-impact"></div>
+          </article>
+
+        </div>
+
+        <article class="panel live-market-agenda-panel" data-live-module="agenda">
+          <div class="panel-heading"><div><p class="eyebrow">AGENDA DE MERCADO</p><h4>Próximos marcos do dia</h4></div><span id="liveAgendaBadge" class="badge">sessões + macro</span></div>
+          <div id="liveMarketAgenda" class="live-market-agenda"></div>
+          <p class="helper">A agenda de sessões continua calculada por fuso. O calendário econômico usa um provedor externo real quando FINNHUB_API_KEY estiver configurada no ambiente publicado.</p>
+        </article>
+
+        <article class="panel live-positions-panel" data-live-module="positions">
+          <div class="panel-heading"><div><p class="eyebrow">POSIÇÕES COTADAS</p><h4>Preço, variação e peso na carteira</h4></div><button id="refreshPortfolioQuotesLive" class="secondary-button small-button" type="button">Atualizar posições</button></div>
+          <div id="livePositionsTable" class="table-wrap"></div>
+        </article>
+        </div>
+        <p class="helper live-disclaimer">O Live Monitoring, o Live Alert Center e o Live Intelligence Workspace são informativos. Cotações, históricos, notícias, calendário econômico e eventos dependem das fontes conectadas e podem ter atraso, lacunas ou revisões. ETFs usados como proxies continuam identificados. O termômetro é uma heurística descritiva, não VaR nem previsão. Nenhum painel constitui recomendação automática de compra ou venda.</p>
+      </section>
+
+      <section id="watchlistSection" class="view-section" hidden>
+        <div class="section-heading"><div><p class="eyebrow">LISTA DE OBSERVAÇÃO</p><h3>Watchlist</h3><p>Acompanhe ativos que ainda não fazem parte da carteira. O preço-alvo funciona como um alerta visual, não como recomendação de compra.</p></div><button id="addWatchButton" class="primary-button auto-width" type="button">＋ Adicionar à watchlist</button></div>
+        <div id="watchAlert" class="notice" hidden></div>
+        <div id="watchGrid" class="watch-grid"></div>
+      </section>
+
+
+      <section id="financeSection" class="view-section" hidden>
+        <div class="section-heading finance-heading">
+          <div><p class="eyebrow">MINHA VIDA FINANCEIRA</p><h3>Planejamento pessoal</h3><p>Preencha quando quiser. Renda, despesas, reserva, dívidas, patrimônio fora da carteira e metas ficam separados para cada usuário e podem ser editados a qualquer momento.</p></div>
+          <button id="editFinanceButton" class="primary-button auto-width" type="button">✎ Editar dados financeiros</button>
+        </div>
+        <div class="source-notice finance-privacy-note"><strong>Privacidade por usuário.</strong> Camile e Lucas veem apenas os próprios dados. Na prévia standalone, o que você editar fica salvo somente neste navegador; na plataforma publicada, fica no banco privado do respectivo login.</div>
+        <div class="metric-grid">
+          <article class="metric-card"><span>Renda líquida mensal</span><strong id="financeIncome">—</strong><small>preencha quando quiser</small></article>
+          <article class="metric-card"><span>Despesas mensais</span><strong id="financeExpenses">—</strong><small>fixas + variáveis + compromissos</small></article>
+          <article class="metric-card"><span>Sobra mensal estimada</span><strong id="financeFreeCash">—</strong><small>renda − despesas</small></article>
+          <article class="metric-card"><span>Reserva de emergência</span><strong id="financeReserveMonths">—</strong><small>meses de despesas cobertos</small></article>
+        </div>
+        <div class="overview-grid finance-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">MAPA PESSOAL</p><h4>Patrimônio ampliado</h4></div><span class="badge">editável</span></div>
+            <div id="financeMap" class="finance-map"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">META PATRIMONIAL</p><h4>Distância até o objetivo</h4></div><span id="financeGoalDateBadge" class="badge">sem data</span></div>
+            <div id="financeNetWorthGoal" class="finance-goal-summary"></div>
+          </article>
+        </div>
+        <div class="overview-grid finance-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">OBJETIVOS</p><h4>Metas pessoais</h4></div><button id="addFinancialGoalButton" class="text-button" type="button">＋ Nova meta</button></div>
+            <div id="financialGoalsList" class="finance-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">ACOMPANHAMENTO MENSAL</p><h4>Check-in financeiro</h4></div><button id="addFinanceCheckinButton" class="text-button" type="button">＋ Registrar mês</button></div>
+            <div id="financeCheckinList" class="finance-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="planningSection" class="view-section" hidden>
+        <div class="section-heading planning-heading">
+          <div><p class="eyebrow">PLANEJAMENTO PATRIMONIAL</p><h3>Cenários, metas & concentração</h3><p>Use seus próprios dados e premissas para explorar cenários. Os cálculos são simulações matemáticas, não previsões de mercado.</p></div>
+          <div class="planning-heading-actions"><button id="exportJsonButton" class="secondary-button auto-width" type="button">↓ Backup JSON</button><button id="exportCsvButton" class="secondary-button auto-width" type="button">↓ Resumo CSV</button></div>
+        </div>
+
+        <div class="metric-grid metric-grid-six">
+          <article class="metric-card"><span>Patrimônio ampliado</span><strong id="planningNetWorth">—</strong><small>carteira + dados pessoais − dívidas</small></article>
+          <article class="metric-card"><span>Maior posição</span><strong id="planningTopPosition">—</strong><small id="planningTopPositionName">sem ativos</small></article>
+          <article class="metric-card"><span>Top 5 da carteira</span><strong id="planningTopFive">—</strong><small>concentração das maiores posições</small></article>
+          <article class="metric-card"><span>Classes com posição</span><strong id="planningClassCount">0</strong><small>diversificação por classe</small></article>
+          <article class="metric-card"><span>Reserva</span><strong id="planningReserveMonths">—</strong><small>meses de despesas cobertos</small></article>
+          <article class="metric-card"><span>Meta patrimonial</span><strong id="planningGoalProgress">—</strong><small>progresso com dados preenchidos</small></article>
+        </div>
+
+        <div class="overview-grid planning-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">PROJEÇÃO</p><h4>Trajetória patrimonial</h4></div><span class="badge">premissas editáveis</span></div>
+            <div class="planning-form-grid">
+              <label>Patrimônio inicial (R$)<input id="projectionInitial" inputmode="decimal" placeholder="calculado automaticamente"></label>
+              <label>Aporte mensal (R$)<input id="projectionMonthly" inputmode="decimal" placeholder="0,00"></label>
+              <label>Retorno anual hipotético (%)<input id="projectionReturn" inputmode="decimal" value="8,00"></label>
+              <label>Inflação anual hipotética (%)<input id="projectionInflation" inputmode="decimal" value="4,50"></label>
+              <label>Horizonte (anos)<input id="projectionYears" inputmode="numeric" value="10"></label>
+            </div>
+            <div class="planning-actions"><button id="calculateProjectionButton" class="primary-button auto-width" type="button">Calcular projeção</button><button id="savePlanningSettingsButton" class="secondary-button auto-width" type="button">Salvar premissas</button></div>
+            <div id="projectionResult" class="projection-result"></div>
+            <p class="helper">A projeção usa capitalização mensal e não considera impostos, taxas, mudanças de aporte ou variações reais do mercado.</p>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">CONCENTRAÇÃO</p><h4>Mapa das maiores exposições</h4></div><span class="badge">descritivo</span></div>
+            <div id="planningConcentration" class="planning-concentration"></div>
+          </article>
+        </div>
+
+        <article class="panel scenario-panel">
+          <div class="panel-heading"><div><p class="eyebrow">SIMULADOR DE CENÁRIOS</p><h4>E se as classes variassem?</h4></div><span class="badge">cenário hipotético</span></div>
+          <div class="scenario-input-grid">
+            <label>Ações BR (%)<input id="shockAcoes" inputmode="decimal" value="-10"></label>
+            <label>FIIs (%)<input id="shockFiis" inputmode="decimal" value="-8"></label>
+            <label>ETFs (%)<input id="shockEtfs" inputmode="decimal" value="-7"></label>
+            <label>Exterior (%)<input id="shockExterior" inputmode="decimal" value="-5"></label>
+            <label>Cripto (%)<input id="shockCripto" inputmode="decimal" value="-20"></label>
+            <label>Renda Fixa (%)<input id="shockRendaFixa" inputmode="decimal" value="0"></label>
+            <label>Caixa (%)<input id="shockCaixa" inputmode="decimal" value="0"></label>
+            <label>Outros (%)<input id="shockOutros" inputmode="decimal" value="-5"></label>
+          </div>
+          <div class="planning-actions"><button id="calculateScenarioButton" class="primary-button auto-width" type="button">Simular impacto</button><button id="resetScenarioButton" class="secondary-button auto-width" type="button">Restaurar exemplo</button></div>
+          <div id="scenarioResult" class="scenario-result"></div>
+        </article>
+
+        <div class="overview-grid planning-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">CHECK-INS</p><h4>Evolução financeira mensal</h4></div><span class="badge">dados preenchidos por você</span></div>
+            <div id="planningCheckins" class="planning-checkins"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">RESUMO EXECUTIVO</p><h4>Leitura consolidada</h4></div><span class="badge">sem recomendação</span></div>
+            <div id="planningExecutive" class="analysis-notes"></div>
+          </article>
+        </div>
+
+        <div class="source-notice"><strong>Importante:</strong> cenários e projeções são ilustrações baseadas nas premissas que você informar. Eles não representam previsão de rentabilidade nem recomendação de compra ou venda.</div>
+      </section>
+
+
+      <section id="reportsSection" class="view-section" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">RELATÓRIOS PROFISSIONAIS</p><h3>Leitura por período</h3><p>Consolide movimentações, proventos, alocação, metas e evolução em um formato objetivo para conferência, exportação e impressão.</p></div>
+          <div class="section-actions"><button id="reportExportButton" class="secondary-button auto-width" type="button">Baixar CSV</button><button id="reportPrintButton" class="primary-button auto-width" type="button">Imprimir / PDF</button></div>
+        </div>
+        <article class="panel report-controls">
+          <div class="report-filter-grid">
+            <label>Relatório<select id="reportType"><option value="monthly">Mensal</option><option value="annual">Anual</option><option value="income">Proventos</option><option value="flows">Aportes & retiradas</option><option value="allocation">Alocação</option><option value="goals">Metas</option></select></label>
+            <label>Mês<input id="reportMonth" type="month"></label>
+            <label>Ano<select id="reportYear"></select></label>
+            <button id="reportRefreshButton" class="secondary-button" type="button">Atualizar relatório</button>
+          </div>
+        </article>
+        <div id="printableReport" class="report-sheet">
+          <header class="report-sheet-header"><div><p class="eyebrow">PLATAFORMA DE INVESTIMENTOS</p><h4 id="reportTitle">Relatório mensal</h4><p id="reportSubtitle">—</p></div><div class="report-mark">PI<span>MMXXVI</span></div></header>
+          <div id="reportKpis" class="report-kpis"></div>
+          <div id="reportBody" class="report-body"></div>
+          <footer class="report-footer"><span id="reportGeneratedAt"></span><span>Relatório descritivo baseado nos dados cadastrados na plataforma.</span></footer>
+        </div>
+      </section>
+
+      <section id="rulesSection" class="view-section" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">ACOMPANHAMENTO AUTOMÁTICO</p><h3>Regras & alertas</h3><p>Ative apenas os sinais que fazem sentido para sua rotina. As regras observam seus próprios limites e dados; não escolhem investimentos por você.</p></div>
+          <div class="section-actions"><button id="evaluateRulesButton" class="secondary-button auto-width" type="button">Reavaliar agora</button><button id="saveRulesButton" class="primary-button auto-width" type="button">Salvar regras</button></div>
+        </div>
+        <div id="rulesGrid" class="rules-grid"></div>
+        <article class="panel rule-history-panel"><div class="panel-heading"><div><p class="eyebrow">HISTÓRICO</p><h4>Regras disparadas</h4></div><span id="ruleHistoryBadge" class="badge">0 eventos</span></div><div id="ruleHistory" class="rule-history"></div></article>
+      </section>
+
+      <section id="governanceSection" class="view-section" hidden>
+        <div class="section-heading governance-heading">
+          <div><p class="eyebrow">GOVERNANÇA DA CARTEIRA</p><h3>Mandato, revisões & cenários</h3><p>Registre suas próprias regras de processo, documente decisões e teste impactos hipotéticos sem transformar a plataforma em uma recomendação automática.</p></div>
+          <div class="section-actions"><button id="governanceExportButton" class="secondary-button auto-width" type="button">Exportar snapshot</button><button id="editGovernanceButton" class="primary-button auto-width" type="button">Editar mandato</button></div>
+        </div>
+
+        <div class="executive-metrics governance-metrics">
+          <article class="executive-metric"><span>Mandato</span><strong id="governanceMandateStatus">—</strong><small>política registrada</small></article>
+          <article class="executive-metric"><span>Revisões vencidas</span><strong id="governanceDueCount">0</strong><small>itens do diário</small></article>
+          <article class="executive-metric"><span>Maior posição</span><strong id="governanceTopWeight">0,00%</strong><small>peso atual</small></article>
+          <article class="executive-metric"><span>Stress salvo</span><strong id="governanceStressImpact">0,00%</strong><small>impacto hipotético</small></article>
+        </div>
+
+        <div class="governance-grid">
+          <article class="panel governance-mandate-card">
+            <div class="panel-heading"><div><p class="eyebrow">MANDATO PESSOAL</p><h4>Regras do processo</h4></div><span id="governanceMandateBadge" class="badge">não configurado</span></div>
+            <div id="governanceMandate" class="governance-mandate"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">FILA DE REVISÃO</p><h4>O que precisa ser revisitado</h4></div><span id="governanceReviewBadge" class="badge">0 itens</span></div>
+            <div id="governanceReviewQueue" class="governance-review-list"></div>
+          </article>
+        </div>
+
+        <div class="governance-grid governance-grid-wide">
+          <article class="panel stress-panel">
+            <div class="panel-heading"><div><p class="eyebrow">STRESS TEST</p><h4>Cenário definido por você</h4></div><span class="badge">hipotético</span></div>
+            <p class="helper">Informe uma variação percentual por classe. O cálculo aplica o choque ao valor atual daquela classe e mostra apenas o efeito matemático sobre o patrimônio.</p>
+            <div id="stressShockGrid" class="stress-shock-grid"></div>
+            <div class="stress-actions"><button id="stressCalculateButton" class="secondary-button auto-width" type="button">Calcular cenário</button><button id="stressSaveButton" class="text-button" type="button">Salvar premissas →</button></div>
+            <div id="stressResult" class="stress-result"></div>
+          </article>
+          <article class="panel governance-check-panel">
+            <div class="panel-heading"><div><p class="eyebrow">ADERÊNCIA</p><h4>Mandato x carteira atual</h4></div><span id="governanceAdherenceBadge" class="badge">—</span></div>
+            <div id="governanceAdherence" class="executive-list"></div>
+          </article>
+        </div>
+
+        <article class="panel journal-panel">
+          <div class="panel-heading journal-heading"><div><p class="eyebrow">DIÁRIO DE DECISÕES</p><h4>Contexto antes e depois</h4></div><div class="journal-head-actions"><label>Status<select id="journalStatusFilter"><option value="ALL">Todos</option><option value="OPEN">Em aberto</option><option value="WATCH">Acompanhar</option><option value="CLOSED">Encerrados</option></select></label><button id="addDecisionJournalButton" class="primary-button auto-width" type="button">＋ Novo registro</button></div></div>
+          <div id="decisionJournalList" class="decision-journal-list"></div>
+        </article>
+
+        <div class="source-notice"><strong>Como usar:</strong> o mandato e o diário registram critérios definidos por você. O stress test é uma simulação aritmética e não prevê preços, probabilidades ou resultados futuros.</div>
+      </section>
+
+      <section id="closingSection" class="view-section" hidden>
+        <div class="section-heading closing-heading">
+          <div><p class="eyebrow">FECHAMENTO & CONTROLE</p><h3>Feche o mês com contexto</h3><p>Consolide movimentações, proventos, qualidade dos dados e um registro mensal editável. Nada aqui decide por você; a área organiza o que já foi informado.</p></div>
+          <div class="closing-actions"><label class="month-control">Mês<input id="closingMonth" type="month"></label><button id="downloadClosingButton" class="secondary-button auto-width" type="button">↓ Fechamento CSV</button></div>
+        </div>
+        <div class="metric-grid metric-grid-six">
+          <article class="metric-card"><span>Aportes no mês</span><strong id="closingDeposits">R$ 0,00</strong><small>entradas registradas</small></article>
+          <article class="metric-card"><span>Retiradas no mês</span><strong id="closingWithdrawals">R$ 0,00</strong><small>saídas registradas</small></article>
+          <article class="metric-card"><span>Proventos líquidos</span><strong id="closingIncome">R$ 0,00</strong><small>recebimentos cadastrados</small></article>
+          <article class="metric-card"><span>Operações</span><strong id="closingTrades">0</strong><small>compras e vendas</small></article>
+          <article class="metric-card"><span>Investido no check-in</span><strong id="closingCheckinInvested">—</strong><small>preenchido por você</small></article>
+          <article class="metric-card"><span>Qualidade dos dados</span><strong id="closingDataScore">—</strong><small>checagens da plataforma</small></article>
+        </div>
+        <div class="overview-grid closing-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">LINHA DO MÊS</p><h4>Movimentações & renda</h4></div><span id="closingActivityBadge" class="badge">0 registros</span></div>
+            <div id="closingActivity" class="closing-activity"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">SAÚDE DOS DADOS</p><h4>O que merece conferência</h4></div><span class="badge">controle</span></div>
+            <div id="dataHealthList" class="data-health-list"></div>
+          </article>
+        </div>
+        <div class="overview-grid closing-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">DOSSIÊ DO ATIVO</p><h4>Uma posição em detalhe</h4></div><select id="dossierAsset" class="inline-select" aria-label="Selecionar ativo"></select></div>
+            <div id="assetDossier" class="asset-dossier"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">REGISTRO DO FECHAMENTO</p><h4>Nota mensal editável</h4></div><span id="closingStatusBadge" class="badge">aberto</span></div>
+            <div class="closing-form">
+              <label>Status<select id="closingStatus"><option value="OPEN">Aberto</option><option value="CLOSED">Fechado</option></select></label>
+              <label>Observações do mês<textarea id="closingNotes" rows="7" maxlength="3000" placeholder="Ex.: o que mudou, decisões tomadas, pontos para revisar no próximo mês..."></textarea></label>
+              <button id="saveClosingButton" class="primary-button auto-width" type="button">Salvar fechamento</button>
+              <p class="helper">Na prévia standalone, esta nota fica somente neste navegador e separada entre Camile e Lucas.</p>
+            </div>
+          </article>
+        </div>
+        <article class="panel goal-pace-panel">
+          <div class="panel-heading"><div><p class="eyebrow">RITMO DAS METAS</p><h4>Quanto falta para os objetivos cadastrados</h4></div><span class="badge">cálculo linear</span></div>
+          <div id="goalPaceList" class="goal-pace-list"></div>
+          <p class="helper">O valor mensal exibido é apenas a divisão simples do saldo restante pelos meses até a data definida; não considera rentabilidade futura.</p>
+        </article>
+      </section>
+
+      <section id="agendaSection" class="view-section" hidden>
+        <div class="section-heading">
+          <div><p class="eyebrow">AGENDA & NOTÍCIAS</p><h3>O que pode afetar sua carteira</h3><p>Notícias relacionadas aos ativos, proventos já anunciados e uma agenda econômica/corporativa que você pode personalizar.</p></div>
+          <button id="refreshAgendaButton" class="primary-button auto-width" type="button">↻ Atualizar agenda</button>
+        </div>
+        <div id="agendaSourceNotice" class="source-notice">Notícias via feed público; proventos anunciados via fonte de mercado. Datas futuras são exibidas somente quando informadas pela fonte.</div>
+        <div class="overview-grid agenda-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">NOTÍCIAS</p><h4>Ativos da sua carteira</h4></div><span class="badge">fontes externas</span></div>
+            <div id="agendaNews" class="agenda-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">PROVENTOS ANUNCIADOS</p><h4>Próximos pagamentos informados</h4></div><span class="badge">não é previsão</span></div>
+            <div id="agendaDividends" class="agenda-list"></div>
+          </article>
+        </div>
+        <article class="panel agenda-events-panel">
+          <div class="panel-heading"><div><p class="eyebrow">CALENDÁRIO PESSOAL</p><h4>Eventos econômicos, corporativos e pessoais</h4></div><button id="addCalendarEventButton" class="secondary-button small-button" type="button">＋ Adicionar evento</button></div>
+          <div id="calendarEventsList" class="agenda-events"></div>
+        </article>
+      </section>
+
+      <section id="historySection" class="view-section" hidden>
+        <div class="section-heading"><div><p class="eyebrow">AUDITORIA</p><h3>Histórico da plataforma</h3><p>Registros de cadastro, edição, mercado, metas, importações, movimentações e cálculos.</p></div></div>
+        <article class="panel"><div id="historyList" class="history-list"></div></article>
+      </section>
+    </div>
+  </section>
+
+  <dialog id="financialBaselineDialog" class="app-dialog financial-baseline-dialog">
+    <form id="financialBaselineForm" method="dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">BASE FINANCEIRA</p><h3>Editar valores principais</h3><p>Use a canetinha para acertar o ponto de partida. Depois disso, novos ativos, movimentações e proventos continuam sendo somados e cruzados automaticamente.</p></div><button type="button" class="dialog-close" data-close-dialog="financialBaselineDialog" aria-label="Fechar">×</button></div>
+      <div id="financialBaselineStatus" class="baseline-status"></div>
+      <div class="form-grid baseline-grid">
+        <label>Patrimônio atual (R$)<input id="baselineMarketValue" inputmode="decimal" placeholder="automático"><small id="baselineMarketAuto">Automático: R$ 0,00</small></label>
+        <label>Total investido / custo (R$)<input id="baselineInvested" inputmode="decimal" placeholder="automático"><small id="baselineInvestedAuto">Automático: R$ 0,00</small></label>
+        <label>Aportes acumulados (R$)<input id="baselineContributions" inputmode="decimal" placeholder="automático"><small id="baselineContributionsAuto">Automático: R$ 0,00</small></label>
+        <label>Retiradas acumuladas (R$)<input id="baselineWithdrawals" inputmode="decimal" placeholder="automático"><small id="baselineWithdrawalsAuto">Automático: R$ 0,00</small></label>
+        <label>Proventos acumulados (R$)<input id="baselineIncome" inputmode="decimal" placeholder="automático"><small id="baselineIncomeAuto">Automático: R$ 0,00</small></label>
+      </div>
+      <div class="baseline-cross-note"><strong>Reconciliação automática</strong><span>A edição vira uma base. A partir dela, qualquer novo lançamento recalcula patrimônio, performance, fiscal, relatórios, projeções, metas e decisões.</span></div>
+      <p id="financialBaselineError" class="form-error"></p>
+      <div class="dialog-actions baseline-actions"><button id="baselineAutoButton" type="button" class="text-button">Voltar tudo ao automático</button><button id="baselineZeroButton" type="button" class="secondary-button">Zerar valores</button><button id="saveFinancialBaselineButton" type="submit" class="primary-button">Salvar e reconciliar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="assetDialog" class="app-dialog">
+    <form id="assetForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="assetDialog" aria-label="Fechar">×</button><p class="eyebrow">ATIVO</p><h3 id="assetDialogTitle">Adicionar investimento</h3><input id="assetId" type="hidden" />
+      <div class="form-grid two"><label>Código / ticker<input id="assetSymbol" maxlength="32" required placeholder="Ex.: PETR4" /></label><label>Nome<input id="assetName" maxlength="100" required placeholder="Ex.: Petrobras PN" /></label><label>Classe<select id="assetClass"></select></label><label>Tipo<input id="assetType" maxlength="40" placeholder="Ex.: Ação" /></label><label>Quantidade<input id="assetQuantity" inputmode="decimal" required placeholder="0" /></label><label>Preço médio (R$)<input id="assetAveragePrice" inputmode="decimal" required placeholder="0,00" /></label><label>Preço manual atual (R$)<input id="assetManualPrice" inputmode="decimal" placeholder="Opcional" /></label><label>Meta individual (%)<input id="assetTargetPct" inputmode="decimal" placeholder="0" /></label></div>
+      <label class="switch-line"><input id="assetAutoQuote" type="checkbox" checked /><span><strong>Cotação automática B3</strong><small>Usa o ticker para consultar a fonte de mercado.</small></span></label><label>Observações<textarea id="assetNotes" rows="3" maxlength="800"></textarea></label><p id="assetFormError" class="form-error" role="alert"></p><div class="dialog-actions"><button id="deleteAssetButton" type="button" class="danger-button" hidden>Excluir</button><span></span><button type="button" class="secondary-button" data-close-dialog="assetDialog">Cancelar</button><button id="saveAssetButton" type="submit" class="primary-button auto-width">Salvar ativo</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="transactionDialog" class="app-dialog compact-dialog">
+    <form id="transactionForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="transactionDialog" aria-label="Fechar">×</button><p class="eyebrow">MOVIMENTAÇÃO</p><h3>Novo registro</h3>
+      <label>Tipo<select id="transactionKind"><option value="BUY">Compra</option><option value="SELL">Venda</option><option value="DEPOSIT">Aporte</option><option value="WITHDRAWAL">Retirada</option></select></label>
+      <label>Data<input id="transactionDate" type="date" required /></label>
+      <div id="transactionAssetFields"><label>Ativo<select id="transactionAsset"></select></label><div class="form-grid two"><label>Quantidade<input id="transactionQuantity" inputmode="decimal" placeholder="0" /></label><label>Preço unitário (R$)<input id="transactionPrice" inputmode="decimal" placeholder="0,00" /></label></div></div>
+      <div id="transactionCashFields" hidden><label>Valor (R$)<input id="transactionAmount" inputmode="decimal" placeholder="0,00" /></label></div>
+      <label>Taxas (R$)<input id="transactionFees" inputmode="decimal" placeholder="0,00" /></label><label>Observações<textarea id="transactionNotes" rows="3" maxlength="600"></textarea></label><p id="transactionError" class="form-error"></p><div class="dialog-actions"><span></span><button type="button" class="secondary-button" data-close-dialog="transactionDialog">Cancelar</button><button id="saveTransactionButton" type="submit" class="primary-button auto-width">Registrar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="incomeDialog" class="app-dialog compact-dialog">
+    <form id="incomeForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="incomeDialog" aria-label="Fechar">×</button><p class="eyebrow">PROVENTO</p><h3>Registrar recebimento</h3>
+      <label>Tipo<select id="incomeType"><option value="DIVIDEND">Dividendo</option><option value="JCP">JCP</option><option value="FII_INCOME">Rendimento de FII</option><option value="INTEREST">Juros</option><option value="COUPON">Cupom</option><option value="OTHER">Outro</option></select></label><label>Ativo (opcional)<select id="incomeAsset"></select></label><label>Data do pagamento<input id="incomeDate" type="date" required /></label><div class="form-grid two"><label>Valor bruto (R$)<input id="incomeGross" inputmode="decimal" placeholder="0,00" /></label><label>Imposto (R$)<input id="incomeTax" inputmode="decimal" placeholder="0,00" /></label></div><label>Observações<textarea id="incomeNotes" rows="3" maxlength="600"></textarea></label><p id="incomeError" class="form-error"></p><div class="dialog-actions"><span></span><button type="button" class="secondary-button" data-close-dialog="incomeDialog">Cancelar</button><button id="saveIncomeButton" type="submit" class="primary-button auto-width">Salvar</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="watchDialog" class="app-dialog compact-dialog">
+    <form id="watchForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="watchDialog" aria-label="Fechar">×</button><p class="eyebrow">WATCHLIST</p><h3 id="watchDialogTitle">Adicionar ativo</h3><input id="watchId" type="hidden" /><label>Ticker<input id="watchSymbol" maxlength="32" placeholder="Ex.: WEGE3" required /></label><label>Nome<input id="watchName" maxlength="100" placeholder="Ex.: WEG" /></label><div class="form-grid two"><label>Preço de interesse (R$)<input id="watchTarget" inputmode="decimal" placeholder="Opcional" /></label><label>Alerta de oscilação diária (%)<input id="watchChangeAlert" inputmode="decimal" placeholder="Ex.: 3,00" /></label></div><label>Observações<textarea id="watchNotes" rows="3" maxlength="600"></textarea></label><p id="watchError" class="form-error"></p><div class="dialog-actions"><button id="deleteWatchButton" type="button" class="danger-button" hidden>Excluir</button><span></span><button type="button" class="secondary-button" data-close-dialog="watchDialog">Cancelar</button><button id="saveWatchButton" type="submit" class="primary-button auto-width">Salvar</button></div></form>
+  </dialog>
+
+
+  <dialog id="financeDialog" class="app-dialog">
+    <form id="financeForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="financeDialog" aria-label="Fechar">×</button><p class="eyebrow">VIDA FINANCEIRA</p><h3>Editar informações pessoais</h3>
+      <p class="helper">Todos os campos são opcionais. Você pode deixar tudo em branco e preencher aos poucos.</p>
+      <div class="form-grid two">
+        <label>Renda líquida mensal (R$)<input id="pfMonthlyIncome" inputmode="decimal" placeholder="0,00"></label>
+        <label>Meta de investimento mensal (R$)<input id="pfMonthlyInvestmentGoal" inputmode="decimal" placeholder="0,00"></label>
+        <label>Despesas fixas mensais (R$)<input id="pfFixedExpenses" inputmode="decimal" placeholder="0,00"></label>
+        <label>Despesas variáveis mensais (R$)<input id="pfVariableExpenses" inputmode="decimal" placeholder="0,00"></label>
+        <label>Outros compromissos mensais (R$)<input id="pfOtherCommitments" inputmode="decimal" placeholder="0,00"></label>
+        <label>Reserva de emergência atual (R$)<input id="pfEmergencyReserve" inputmode="decimal" placeholder="0,00"></label>
+        <label>Dívidas atuais (R$)<input id="pfDebtsTotal" inputmode="decimal" placeholder="0,00"></label>
+        <label>Outros investimentos fora da plataforma (R$)<input id="pfOtherInvestments" inputmode="decimal" placeholder="0,00"></label>
+        <label>Patrimônio em imóveis / participações (R$)<input id="pfRealEstate" inputmode="decimal" placeholder="0,00"></label>
+        <label>Outros bens / ativos (R$)<input id="pfOtherAssets" inputmode="decimal" placeholder="0,00"></label>
+        <label>Reserva desejada (meses)<input id="pfReserveMonths" inputmode="decimal" placeholder="6"></label>
+        <label>Meta de patrimônio (R$)<input id="pfNetWorthGoal" inputmode="decimal" placeholder="0,00"></label>
+        <label>Data da meta patrimonial<input id="pfNetWorthGoalDate" type="date"></label>
+      </div>
+      <label>Observações<textarea id="pfNotes" rows="4" maxlength="1500" placeholder="Ex.: prioridades, regras pessoais, despesas que quero reduzir..."></textarea></label>
+      <p id="financeFormError" class="form-error"></p><div class="dialog-actions"><span></span><button type="button" class="secondary-button" data-close-dialog="financeDialog">Cancelar</button><button id="saveFinanceButton" type="submit" class="primary-button auto-width">Salvar informações</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="financialGoalDialog" class="app-dialog compact-dialog">
+    <form id="financialGoalForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="financialGoalDialog" aria-label="Fechar">×</button><p class="eyebrow">META PESSOAL</p><h3 id="financialGoalDialogTitle">Nova meta</h3><input id="financialGoalId" type="hidden">
+      <label>Nome da meta<input id="financialGoalTitle" maxlength="120" placeholder="Ex.: Reserva, viagem, imóvel" required></label>
+      <label>Categoria<select id="financialGoalCategory"><option value="RESERVE">Reserva</option><option value="TRAVEL">Viagem</option><option value="PROPERTY">Imóvel</option><option value="RETIREMENT">Aposentadoria</option><option value="EDUCATION">Educação</option><option value="OTHER">Outra</option></select></label>
+      <div class="form-grid two"><label>Valor-alvo (R$)<input id="financialGoalTarget" inputmode="decimal" placeholder="0,00"></label><label>Valor atual (R$)<input id="financialGoalCurrent" inputmode="decimal" placeholder="0,00"></label></div>
+      <label>Data desejada<input id="financialGoalDate" type="date"></label><label>Observações<textarea id="financialGoalNotes" rows="3" maxlength="800"></textarea></label><p id="financialGoalError" class="form-error"></p>
+      <div class="dialog-actions"><button id="deleteFinancialGoalButton" type="button" class="danger-button" hidden>Excluir</button><span></span><button type="button" class="secondary-button" data-close-dialog="financialGoalDialog">Cancelar</button><button id="saveFinancialGoalButton" type="submit" class="primary-button auto-width">Salvar meta</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="financeCheckinDialog" class="app-dialog compact-dialog">
+    <form id="financeCheckinForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="financeCheckinDialog" aria-label="Fechar">×</button><p class="eyebrow">CHECK-IN MENSAL</p><h3>Registrar mês</h3>
+      <label>Mês<input id="financeCheckinMonth" type="month" required></label><div class="form-grid two"><label>Renda no mês (R$)<input id="financeCheckinIncome" inputmode="decimal" placeholder="0,00"></label><label>Despesas no mês (R$)<input id="financeCheckinExpenses" inputmode="decimal" placeholder="0,00"></label><label>Investido no mês (R$)<input id="financeCheckinInvested" inputmode="decimal" placeholder="0,00"></label><label>Caixa no fim do mês (R$)<input id="financeCheckinCash" inputmode="decimal" placeholder="0,00"></label></div><label>Observações<textarea id="financeCheckinNotes" rows="3" maxlength="800"></textarea></label><p id="financeCheckinError" class="form-error"></p><div class="dialog-actions"><span></span><button type="button" class="secondary-button" data-close-dialog="financeCheckinDialog">Cancelar</button><button id="saveFinanceCheckinButton" type="submit" class="primary-button auto-width">Salvar mês</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="calendarEventDialog" class="app-dialog compact-dialog">
+    <form id="calendarEventForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="calendarEventDialog" aria-label="Fechar">×</button><p class="eyebrow">AGENDA</p><h3 id="calendarEventDialogTitle">Adicionar evento</h3><input id="calendarEventId" type="hidden">
+      <label>Data<input id="calendarEventDate" type="date" required></label><label>Categoria<select id="calendarEventCategory"><option value="ECONOMIC">Econômico</option><option value="CORPORATE">Corporativo</option><option value="PERSONAL">Pessoal</option></select></label><label>Título<input id="calendarEventTitle" maxlength="140" required placeholder="Ex.: Reunião do Copom"></label><label>Descrição<textarea id="calendarEventDescription" rows="3" maxlength="900"></textarea></label><label>Fonte / link (opcional)<input id="calendarEventSource" maxlength="500" placeholder="https://..."></label><p id="calendarEventError" class="form-error"></p><div class="dialog-actions"><button id="deleteCalendarEventButton" type="button" class="danger-button" hidden>Excluir</button><span></span><button type="button" class="secondary-button" data-close-dialog="calendarEventDialog">Cancelar</button><button id="saveCalendarEventButton" type="submit" class="primary-button auto-width">Salvar evento</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="governancePolicyDialog" class="app-dialog">
+    <form id="governancePolicyForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="governancePolicyDialog" aria-label="Fechar">×</button><p class="eyebrow">MANDATO DA CARTEIRA</p><h3>Definir regras do processo</h3>
+      <p class="helper">Campos opcionais. Use esta área para documentar seus próprios critérios e limites operacionais.</p>
+      <label>Objetivo da carteira<textarea id="govObjective" rows="3" maxlength="900" placeholder="Ex.: preservar capital, formar patrimônio de longo prazo..."></textarea></label>
+      <div class="form-grid two">
+        <label>Horizonte (anos)<input id="govHorizonYears" inputmode="decimal" placeholder="10"></label>
+        <label>Revisão a cada (meses)<input id="govReviewFrequency" inputmode="numeric" placeholder="6"></label>
+        <label>Limite por ativo (%)<input id="govMaxAssetWeight" inputmode="decimal" placeholder="20,00"></label>
+        <label>Caixa mínimo (%)<input id="govMinCashPct" inputmode="decimal" placeholder="5,00"></label>
+      </div>
+      <label>Regra de liquidez<textarea id="govLiquidityNote" rows="2" maxlength="700" placeholder="Ex.: manter recursos para compromissos de curto prazo..."></textarea></label>
+      <label>Princípios / critérios<textarea id="govPrinciples" rows="4" maxlength="1500" placeholder="Ex.: revisar tese antes de aumentar exposição; registrar motivo das decisões..."></textarea></label>
+      <label>Restrições pessoais<textarea id="govRestrictedAssets" rows="3" maxlength="1000" placeholder="Classes, produtos ou situações que você decidiu não usar."></textarea></label>
+      <p id="governancePolicyError" class="form-error"></p><div class="dialog-actions"><span></span><button type="button" class="secondary-button" data-close-dialog="governancePolicyDialog">Cancelar</button><button id="saveGovernancePolicyButton" type="submit" class="primary-button auto-width">Salvar mandato</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="decisionJournalDialog" class="app-dialog">
+    <form id="decisionJournalForm" method="dialog"><button type="button" class="dialog-close" data-close-dialog="decisionJournalDialog" aria-label="Fechar">×</button><p class="eyebrow">DIÁRIO DE DECISÕES</p><h3 id="decisionJournalDialogTitle">Novo registro</h3><input id="decisionJournalId" type="hidden">
+      <div class="form-grid two"><label>Data<input id="decisionJournalDate" type="date" required></label><label>Tipo<select id="decisionJournalCategory"><option value="REVIEW">Revisão</option><option value="THESIS">Tese / hipótese</option><option value="PLANNED_BUY">Compra planejada</option><option value="PLANNED_SELL">Venda planejada</option><option value="OBSERVATION">Observação</option></select></label></div>
+      <div class="form-grid two"><label>Ativo (opcional)<select id="decisionJournalAsset"></select></label><label>Status<select id="decisionJournalStatus"><option value="OPEN">Em aberto</option><option value="WATCH">Acompanhar</option><option value="CLOSED">Encerrado</option></select></label></div>
+      <label>Título<input id="decisionJournalTitle" maxlength="160" required placeholder="Ex.: Revisar tese após resultado trimestral"></label>
+      <label>Contexto / motivo<textarea id="decisionJournalRationale" rows="4" maxlength="1600" placeholder="O que você observou e por que decidiu registrar isto?"></textarea></label>
+      <label>Gatilho para rever<textarea id="decisionJournalTrigger" rows="2" maxlength="900" placeholder="Ex.: mudança de premissa, evento, preço, prazo ou nova informação"></textarea></label>
+      <label>Revisar em<input id="decisionJournalReviewDate" type="date"></label>
+      <p id="decisionJournalError" class="form-error"></p><div class="dialog-actions"><button id="deleteDecisionJournalButton" type="button" class="danger-button" hidden>Excluir</button><span></span><button type="button" class="secondary-button" data-close-dialog="decisionJournalDialog">Cancelar</button><button id="saveDecisionJournalButton" type="submit" class="primary-button auto-width">Salvar registro</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="shortcutDialog" class="app-dialog r14-shortcut-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="shortcutDialog" aria-label="Fechar">×</button>
+    <p class="eyebrow">HOME PERSONALIZADA</p><h3>Escolha seus atalhos.</h3>
+    <p class="dialog-intro">Fixe até 6 áreas para aparecerem na Visão geral deste perfil.</p>
+    <div id="shortcutOptions" class="shortcut-options"></div>
+    <p id="shortcutError" class="form-error"></p>
+    <div class="dialog-actions"><button class="secondary-button auto-width" type="button" data-close-dialog="shortcutDialog">Cancelar</button><button id="saveShortcutsButton" class="primary-button auto-width" type="button">Salvar atalhos</button></div>
+  </dialog>
+
+  <dialog id="commandDialog" class="app-dialog command-dialog">
+    <div class="command-dialog-head"><span class="command-icon">⌕</span><input id="commandSearchInput" autocomplete="off" placeholder="Buscar área, ativo ou ação…" aria-label="Busca global"><kbd>ESC</kbd></div>
+    <div id="commandResults" class="command-results"></div>
+    <div class="command-footer"><span>↑ ↓ navegar</span><span>Enter abrir</span><span>Ctrl/Cmd + K</span></div>
+  </dialog>
+
+  <dialog id="settingsDialog" class="app-dialog profile-settings-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="settingsDialog" aria-label="Fechar">×</button>
+    <p class="eyebrow">PERFIL & APARÊNCIA</p><h3>Seu espaço, do seu jeito.</h3>
+    <div class="profile-settings-grid">
+      <section class="profile-photo-panel">
+        <div class="profile-avatar profile-avatar-large"><img id="settingsProfilePhoto" alt="Foto de perfil" hidden><span id="settingsProfileInitials">CL</span></div>
+        <div class="profile-photo-copy"><strong id="settingsProfileName">Perfil</strong><small>Foto exclusiva deste usuário</small></div>
+        <input id="profilePhotoInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+        <div class="profile-photo-actions"><button id="chooseProfilePhotoButton" class="secondary-button small-button" type="button">Adicionar / trocar foto</button><button id="removeProfilePhotoButton" class="text-button" type="button">Remover foto</button></div>
+        <p id="profilePhotoStatus" class="profile-help">JPG, PNG ou WebP. A imagem é recortada automaticamente em formato quadrado e salva apenas no perfil atual.</p>
+      </section>
+      <section class="palette-panel">
+        <div class="palette-heading"><div><strong>Paleta de cores</strong><p id="themeDescription"></p></div><span class="personalization-badge">R15 · ATELIER</span></div>
+        <div id="paletteOptions" class="palette-options" role="radiogroup" aria-label="Escolher paleta de cores"></div>
+        <p class="profile-help">A troca é instantânea. Todas as paletas, fotos e preferências continuam separadas por usuário; a versão 1.0 preserva as automações, segurança e toda a identidade visual escolhida.</p>
+      </section>
+    </div>
+    <div class="settings-block password-settings-block"><strong>Segurança</strong><p>Troque a senha deste usuário sem alterar o perfil do outro. A Central de Segurança da Rodada 19 foi preservada e a Rodada 20 fecha a versão 1.0.</p><button id="openSecurityCenter" class="secondary-button auto-width r19-security-shortcut" type="button">Abrir Central de Segurança</button><form id="passwordForm"><div class="form-grid two"><label>Senha atual<input id="currentPassword" type="password" autocomplete="current-password" /></label><label>Nova senha<input id="newPassword" type="password" minlength="8" autocomplete="new-password" /></label></div><label>Confirmar nova senha<input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" /></label><p id="passwordError" class="form-error"></p><button class="primary-button auto-width" type="submit">Atualizar senha</button></form></div>
+  </dialog>
+  <dialog id="liveMonitorRuleDialog" class="app-dialog live-monitor-rule-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="liveMonitorRuleDialog" aria-label="Fechar">×</button>
+    <p class="eyebrow">AO VIVO · R34</p><h3 id="liveMonitorRuleDialogTitle">Nova regra de monitoramento.</h3>
+    <p class="profile-help">A regra apenas destaca uma condição observada. Ela não envia ordens, não altera sua carteira e não constitui recomendação.</p>
+    <input id="liveMonitorRuleId" type="hidden">
+    <div class="form-grid two">
+      <label>Ativo<select id="liveMonitorSymbol"></select></label>
+      <label>Condição<select id="liveMonitorType"><option value="move_abs">Oscilação absoluta ≥</option><option value="move_up">Alta diária ≥</option><option value="move_down">Queda diária ≥</option><option value="price_above">Preço / nível ≥</option><option value="price_below">Preço / nível ≤</option></select></label>
+    </div>
+    <div class="form-grid two">
+      <label>Limite<input id="liveMonitorThreshold" type="number" min="0" step="0.01" placeholder="Ex.: 3,00"></label>
+      <label>Nível visual<select id="liveMonitorSeverity"><option value="info">Informativo</option><option value="warning" selected>Atenção</option><option value="critical">Alta atenção</option></select></label>
+    </div>
+    <label>Nome da regra<input id="liveMonitorName" type="text" maxlength="100" placeholder="Ex.: PETR4 — oscilação relevante"></label>
+    <label>Observação<textarea id="liveMonitorNote" rows="3" maxlength="400" placeholder="Contexto opcional para lembrar por que esta regra existe."></textarea></label>
+    <label class="switch-line"><input id="liveMonitorEnabled" type="checkbox" checked><span><strong>Regra ativa</strong><small>Avaliar a condição a cada atualização do Live Desk.</small></span></label>
+    <p id="liveMonitorRuleError" class="form-error"></p>
+    <div class="dialog-actions"><button id="deleteLiveMonitorRuleButton" class="danger-button" type="button" hidden>Excluir regra</button><button id="saveLiveMonitorRuleButton" class="primary-button" type="button">Salvar regra</button></div>
+  </dialog>
+
+  <dialog id="liveMonitorDecisionDialog" class="app-dialog live-monitor-decision-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="liveMonitorDecisionDialog" aria-label="Fechar">×</button>
+    <p class="eyebrow">DIÁRIO · R34</p><h3>Registrar decisão de acompanhamento.</h3>
+    <div id="liveMonitorDecisionSource" class="live-monitor-decision-source"></div>
+    <input id="liveMonitorDecisionId" type="hidden"><input id="liveMonitorDecisionSourceType" type="hidden"><input id="liveMonitorDecisionSourceId" type="hidden"><input id="liveMonitorDecisionSymbol" type="hidden">
+    <div class="form-grid two"><label>Status<select id="liveMonitorDecisionStatus"><option value="WATCH">Acompanhar</option><option value="REVIEW">Reavaliar depois</option><option value="NO_ACTION">Sem ação no momento</option><option value="CLOSED">Encerrado</option></select></label><label>Revisar em<input id="liveMonitorDecisionReviewDate" type="date"></label></div>
+    <label>Nota<textarea id="liveMonitorDecisionNote" rows="4" maxlength="1000" placeholder="Registre o contexto e o que decidiu acompanhar."></textarea></label>
+    <label>Desfecho / revisão<textarea id="liveMonitorDecisionOutcome" rows="3" maxlength="1000" placeholder="Preencha ao revisar: o que mudou, o que permaneceu igual e qual foi o desfecho humano."></textarea></label>
+    <p class="profile-help">A data serve apenas para organizar a sua própria revisão. A plataforma não converte o registro em recomendação nem execução.</p>
+    <p id="liveMonitorDecisionError" class="form-error"></p>
+    <div class="dialog-actions"><button id="deleteLiveMonitorDecisionButton" class="danger-button" type="button" hidden>Excluir registro</button><span></span><button id="saveLiveMonitorDecisionButton" class="primary-button" type="button">Salvar no diário</button></div>
+  </dialog>
+
+  <dialog id="liveAlertSettingsDialog" class="app-dialog live-alert-settings-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="liveAlertSettingsDialog" aria-label="Fechar">×</button>
+    <p class="eyebrow">AO VIVO · R34</p><h3>Configurar Central de Alertas.</h3>
+    <p class="profile-help">Defina o que a plataforma deve destacar durante as consultas do Live Desk. Os alertas são descritivos; não enviam ordens nem recomendam operações.</p>
+    <label class="switch-line"><input id="liveAlertsEnabled" type="checkbox" checked><span><strong>Central de Alertas ativa</strong><small>Avaliar as condições abaixo a cada atualização do desk.</small></span></label>
+    <div class="form-grid two"><label>Monitorar<select id="liveAlertMonitorMode"><option value="all">Todo o Live Desk</option><option value="favorites">Somente Meu Radar</option><option value="portfolio">Somente ativos da carteira</option></select></label><label>Cotação antiga após<input id="liveAlertStaleMinutes" type="number" min="5" max="1440" step="5" value="30"><small>minutos</small></label></div>
+    <div class="form-grid two"><label>Limiar de atenção (%)<input id="liveAlertWarningPct" type="number" min="0.1" max="20" step="0.1" value="2"></label><label>Alta atenção (%)<input id="liveAlertCriticalPct" type="number" min="0.1" max="30" step="0.1" value="4"></label></div>
+    <label class="switch-line"><input id="liveAlertBrowserNotifications" type="checkbox"><span><strong>Notificações locais do navegador</strong><small>Somente enquanto este navegador permitir. Estado: <b id="liveNotificationPermission">—</b>.</small></span></label>
+    <button id="requestLiveAlertNotificationsButton" class="secondary-button auto-width" type="button">Solicitar permissão ao navegador</button>
+    <p id="liveAlertSettingsError" class="form-error"></p>
+    <div class="dialog-actions"><button id="resetLiveAlertSettingsButton" class="secondary-button" type="button">Restaurar padrão</button><button id="saveLiveAlertSettingsButton" class="primary-button" type="button">Salvar alertas</button></div>
+  </dialog>
+  <dialog id="liveLayoutDialog" class="app-dialog live-layout-dialog">
+    <button type="button" class="dialog-close" data-close-dialog="liveLayoutDialog" aria-label="Fechar">×</button>
+    <p class="eyebrow">AO VIVO · R34</p><h3>Personalize sua mesa.</h3>
+    <p class="profile-help">Escolha o que aparece e mude a ordem dos blocos. A preferência fica salva neste navegador e não altera os dados da carteira.</p>
+    <div id="liveLayoutList" class="live-layout-list"></div>
+    <div class="dialog-actions"><button id="resetLiveLayoutButton" class="secondary-button" type="button">Restaurar padrão</button><button id="saveLiveLayoutButton" class="primary-button" type="button">Salvar layout</button></div>
+  </dialog>
+  <div id="privacyLock" class="r19-lock-overlay" hidden>
+    <div class="r19-lock-card">
+      <div class="r19-lock-mark">PI</div><p class="eyebrow">TELA BLOQUEADA</p><h2 id="privacyLockTitle">Acesso privado.</h2>
+      <p id="privacyLockCopy">Digite a senha deste usuário para voltar à plataforma.</p>
+      <label id="privacyPasswordLabel">Senha<input id="privacyUnlockPassword" type="password" autocomplete="current-password" placeholder="••••••••"></label>
+      <p id="privacyLockError" class="form-error"></p>
+      <button id="privacyUnlockButton" class="primary-button" type="button">Desbloquear</button>
+      <button id="privacyLogoutButton" class="text-button" type="button">Sair da conta</button>
+    </div>
+  </div>
+
+  <dialog id="r35CaseDialog" class="app-dialog r35-case-dialog">
+    <button class="dialog-close" type="button" data-close-dialog="r35CaseDialog">×</button>
+    <div class="dialog-heading"><p class="eyebrow">RESOLUTION CASE</p><h3 id="r35CaseDialogTitle">Abrir caso de conciliação</h3><p id="r35CaseSourceSummary" class="helper">Documente a divergência sem alterar o dado de origem.</p></div>
+    <form id="r35CaseForm">
+      <input id="r35CaseId" type="hidden"><input id="r35CaseSourceType" type="hidden"><input id="r35CaseSourceKey" type="hidden">
+      <div class="form-grid two">
+        <label>Título<input id="r35CaseTitle" maxlength="180" required></label>
+        <label>Status<select id="r35CaseStatus"><option value="OPEN">Aberto</option><option value="INVESTIGATING">Em análise</option><option value="RESOLVED">Resolvido</option><option value="DISMISSED">Descartado</option></select></label>
+        <label>Classificação<select id="r35CaseClassification"><option value="UNCLASSIFIED">A classificar</option><option value="DATA_ENTRY">Lançamento/digitação</option><option value="TIMING">Competência/tempo</option><option value="SOURCE_GAP">Fonte incompleta</option><option value="DUPLICATE">Duplicidade</option><option value="ROUNDING">Arredondamento</option><option value="OTHER">Outro</option></select></label>
+        <label>Prazo de revisão<input id="r35CaseDueDate" type="date"></label>
+      </div>
+      <label>Análise<textarea id="r35CaseAnalysis" maxlength="2000" placeholder="O que foi conferido, hipótese de causa e próximos passos."></textarea></label>
+      <label>Evidência / referência<textarea id="r35CaseEvidence" maxlength="2000" placeholder="Ex.: extrato da corretora de 31/08, lote de importação #..., comprovante, observação de conferência."></textarea></label>
+      <label>Conclusão<textarea id="r35CaseResolution" maxlength="2000" placeholder="Obrigatória para resolver ou descartar o caso."></textarea></label>
+      <p class="helper">A plataforma registra a conclusão, mas não altera automaticamente a posição, movimentação, preço, provento ou meta que originou o caso.</p>
+      <p id="r35CaseError" class="form-error" role="alert"></p>
+      <div class="dialog-actions"><button id="r35DeleteCase" class="text-button" type="button" hidden>Excluir caso</button><span></span><button class="secondary-button" type="button" data-close-dialog="r35CaseDialog">Cancelar</button><button id="r35SaveCase" class="primary-button" type="submit">Salvar caso</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="r34ReviewDialog" class="app-dialog compact-dialog r34-review-dialog">
+    <button class="dialog-close" type="button" data-close-dialog="r34ReviewDialog">×</button>
+    <div class="dialog-heading"><p class="eyebrow">CONCILIAÇÃO · R34</p><h3>Registrar conferência</h3><p>Salve uma fotografia dos checks atuais com uma nota humana. O registro não altera nenhum dado da carteira.</p></div>
+    <form id="r34ReviewForm"><label>Nota da conferência<textarea id="r34ReviewNote" maxlength="1000" placeholder="Ex.: conferi posição com extrato da corretora; diferença será revisada no lançamento de origem."></textarea></label><p id="r34ReviewError" class="form-error" role="alert"></p><div class="dialog-actions"><span></span><button class="secondary-button" type="button" data-close-dialog="r34ReviewDialog">Cancelar</button><button id="r34SaveReview" class="primary-button" type="submit">Salvar evidência</button></div></form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</main>
+<script src="./app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS fiscal_settings (
+  portfolio_id BIGINT PRIMARY KEY REFERENCES portfolios(id) ON DELETE CASCADE,
+  stock_exemption NUMERIC(18,2) NOT NULL DEFAULT 20000,
+  common_rate NUMERIC(8,4) NOT NULL DEFAULT 15,
+  day_trade_rate NUMERIC(8,4) NOT NULL DEFAULT 20,
+  fii_rate NUMERIC(8,4) NOT NULL DEFAULT 20,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
