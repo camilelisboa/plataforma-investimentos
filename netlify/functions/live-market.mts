@@ -3,6 +3,7 @@ import { getSessionUser } from "../lib/auth.js";
 import { json } from "../lib/http.js";
 
 function num(value: unknown): number | null {
+  if (value === null || value === undefined || value === "") return null;
   const n = Number(value);
   return Number.isFinite(n) ? n : null;
 }
@@ -104,11 +105,12 @@ export default async (req: Request, _context: Context) => {
   const b3Symbols = ["PETR4", "VALE3", "ITUB4", "MGLU3"];
   const globalSymbols = ["SPY", "QQQ", "DIA", "FEZ", "EWJ", "FXI", "GLD", "USO", "SLV", "CPER", "SHY", "IEF", "TLT"];
 
+  const brapiRestrictedUnavailable = { ok: false as const, status: 401, data: null as any };
   const [ibovRes, currencyRes, cryptoRes, macroRes, b3Quotes, globalRes] = await Promise.all([
-    getJson("https://brapi.dev/api/v2/stocks/quote?symbols=%5EBVSP", brapiHeaders),
-    getJson("https://brapi.dev/api/v2/currency?currency=USD-BRL,EUR-BRL,GBP-BRL,JPY-BRL,CHF-BRL,CAD-BRL,AUD-BRL,DKK-BRL,NOK-BRL,SEK-BRL", brapiHeaders),
-    getJson("https://brapi.dev/api/v2/crypto?coin=BTC,ETH&currency=BRL", brapiHeaders),
-    getJson("https://brapi.dev/api/v2/macro/latest?symbols=selic,cdi,ipca12m", brapiHeaders),
+    brapiToken ? getJson("https://brapi.dev/api/v2/stocks/quote?symbols=%5EBVSP", brapiHeaders) : Promise.resolve(brapiRestrictedUnavailable),
+    brapiToken ? getJson("https://brapi.dev/api/v2/currency?currency=USD-BRL,EUR-BRL,GBP-BRL,JPY-BRL,CHF-BRL,CAD-BRL,AUD-BRL,DKK-BRL,NOK-BRL,SEK-BRL", brapiHeaders) : Promise.resolve(brapiRestrictedUnavailable),
+    brapiToken ? getJson("https://brapi.dev/api/v2/crypto?coin=BTC,ETH&currency=BRL", brapiHeaders) : Promise.resolve(brapiRestrictedUnavailable),
+    brapiToken ? getJson("https://brapi.dev/api/v2/macro/latest?symbols=selic,cdi,ipca12m", brapiHeaders) : Promise.resolve(brapiRestrictedUnavailable),
     Promise.all(b3Symbols.map((symbol) => brapiSingleQuote(symbol, brapiToken))),
     globalKey
       ? getJson(`https://api.twelvedata.com/quote?symbol=${encodeURIComponent(globalSymbols.join(","))}`, { Authorization: `apikey ${globalKey}` })
@@ -210,6 +212,9 @@ export default async (req: Request, _context: Context) => {
   if (b3Quotes.some((x) => !x.res.ok)) failures.push({ name: "Ações B3 do desk", status: Math.max(...b3Quotes.map((x) => x.res.status || 0)) });
   if (globalKey && !globalRes.ok) failures.push({ name: "Mercados globais", status: globalRes.status });
 
+  const brapiMessage = brapiToken
+    ? "Brasil, câmbio, cripto e macro habilitados via brapi.dev conforme a cobertura do plano conectado."
+    : "BRAPI_TOKEN não configurado: o sandbox sem token atende apenas PETR4, VALE3, ITUB4 e MGLU3; Ibovespa, câmbio, cripto e macro ficam indisponíveis.";
   const globalMessage = globalKey
     ? "Exterior habilitado via Twelve Data. ETFs de referência para índices, commodities e Treasuries são identificados como proxies; disponibilidade e recência dependem do plano conectado."
     : "Exterior sem chave configurada. Defina TWELVE_DATA_API_KEY no ambiente Netlify para habilitar as referências globais do desk.";
@@ -221,7 +226,7 @@ export default async (req: Request, _context: Context) => {
     sessions: marketSessions(),
     items,
     failures,
-    dataPolicy: `Brasil, moedas e macro: brapi.dev/BCB. ${globalMessage} Os horários de sessão são janelas regulares aproximadas e não substituem calendário oficial de feriados. A tela não deve ser interpretada como feed tick-by-tick universal.`,
+    dataPolicy: `${brapiMessage} ${globalMessage} Os horários de sessão são janelas regulares aproximadas e não substituem calendário oficial de feriados. A tela não deve ser interpretada como feed tick-by-tick universal.`,
   });
 };
 

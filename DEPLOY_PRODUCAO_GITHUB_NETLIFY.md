@@ -15,7 +15,7 @@ Baseline: **Connected Wealth 2.4.0 · Rodada 36 — Production Launch**.
 4. Confirmar `publish = public` e `functions = netlify/functions` (já definidos em `netlify.toml`).
 5. Provisionar o banco e aplicar todas as migrations até `027_round36_production_launch`.
 6. Definir `PLATFORM_SETUP_TOKEN` no ambiente do Netlify.
-7. Opcionalmente configurar `BRAPI_TOKEN`, `FINNHUB_API_KEY` e `TWELVE_DATA_API_KEY`.
+7. Para o painel **Ao vivo**, configurar `BRAPI_TOKEN` (Brasil, câmbio, cripto e macro) e `TWELVE_DATA_API_KEY` (exterior). `FINNHUB_API_KEY` continua opcional para calendário econômico e resultados. Sem essas chaves, o painel mostra dados parciais e marca os blocos indisponíveis em vez de exibir zeros falsos.
 
 ## Primeiro acesso
 1. Abrir a URL `.netlify.app`.
